@@ -32,11 +32,22 @@ namespace MessagingFacts.Utilities
 
         public void Execute(object publisher,IEvent @event)
         {
+            SetUpMocks(@event);
+            PublishEvent(publisher, @event);
+        }
+
+        private void SetUpMocks(IEvent @event)
+        {
             this.fetcher.Setup(f => f.GetSubscribers(It.IsAny<IEvent>()))
                 .Returns(this.GetSubscribers(@event));
             this.publisherFetcher.Setup(f => f.GetPublishers(It.IsAny<IEvent>()))
                 .Returns(this.GetPublishers(@event));
+        }
+
+        private void PublishEvent(object publisher, IEvent @event)
+        {
             var bus = new PublisherBus(this.fetcher.Object, this.publisherFetcher.Object, this.logger.Object);
+
             try
             {
                 bus.Publish(publisher, @event);
