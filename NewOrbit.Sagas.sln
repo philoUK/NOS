@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingFacts", "Messaging
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging", "NewOrbit.Messaging\NewOrbit.Messaging.csproj", "{32C9AA0C-862C-4D8E-8E65-CB4618009FB9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{B1AD506B-ED40-4B31-A780-9B00994AF6BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Command", "NewOrbit.Messaging.Command\NewOrbit.Messaging.Command.csproj", "{A90C2D15-C19D-42C0-984F-78EA2D66E887}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,11 +27,17 @@ Global
 		{32C9AA0C-862C-4D8E-8E65-CB4618009FB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32C9AA0C-862C-4D8E-8E65-CB4618009FB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32C9AA0C-862C-4D8E-8E65-CB4618009FB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A90C2D15-C19D-42C0-984F-78EA2D66E887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A90C2D15-C19D-42C0-984F-78EA2D66E887}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A90C2D15-C19D-42C0-984F-78EA2D66E887}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A90C2D15-C19D-42C0-984F-78EA2D66E887}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1533461D-B37E-4A49-A4A2-A4C3F95F371E} = {F4E3B872-7B9C-40D3-9C4C-B7F4EBA1E33C}
+		{32C9AA0C-862C-4D8E-8E65-CB4618009FB9} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
+		{A90C2D15-C19D-42C0-984F-78EA2D66E887} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
 	EndGlobalSection
 EndGlobal
