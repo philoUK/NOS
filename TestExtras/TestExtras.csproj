@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NewOrbit.Messaging.Command\NewOrbit.Messaging.Command.csproj" />
+    <ProjectReference Include="..\NewOrbit.Messaging.Registrars\NewOrbit.Messaging.Registrars.csproj" />
+  </ItemGroup>
+
+</Project>
