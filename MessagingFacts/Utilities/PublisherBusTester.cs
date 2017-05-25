@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Moq;
 using NewOrbit.Messaging;
+using NewOrbit.Messaging.Abstractions;
+using NewOrbit.Messaging.Exceptions;
 using Xunit;
 
 namespace MessagingFacts.Utilities
@@ -14,6 +16,7 @@ namespace MessagingFacts.Utilities
         private readonly Mock<IGetEventPublishers> publisherFetcher = new Mock<IGetEventPublishers>();
         private bool noPublishersFoundThrown = false;
         private bool tooManyPublishersFoundThrown = false;
+        private bool unregisteredPublisherThrown = false;
         private readonly Mock<IPublisherBusLogger> logger = new Mock<IPublisherBusLogger>();
 
         public PublisherBusTester GivenSubscriber<T, T1>()
@@ -42,9 +45,13 @@ namespace MessagingFacts.Utilities
             {
                 noPublishersFoundThrown = true;
             }
-            catch (MultiplePublishersDefinexException)
+            catch (MultiplePublishersDefinedException)
             {
                 tooManyPublishersFoundThrown = true;
+            }
+            catch (UnregisteredPublisherException)
+            {
+                unregisteredPublisherThrown = true;
             }
         }
 
@@ -103,6 +110,12 @@ namespace MessagingFacts.Utilities
         {
             Assert.True(tooManyPublishersFoundThrown);
             this.logger.Verify(l => l.LogTooManyPublishersFoundException(It.IsAny<IEvent>()), Times.AtLeastOnce());
+        }
+
+        public void AssertUnregisteredPublisherErrorThrownAndLogged()
+        {
+            Assert.True(unregisteredPublisherThrown);
+            this.logger.Verify(l => l.LogUnregisteredPublisherException(It.IsAny<object>(), It.IsAny<IEvent>()), Times.AtLeastOnce());
         }
     }
 }

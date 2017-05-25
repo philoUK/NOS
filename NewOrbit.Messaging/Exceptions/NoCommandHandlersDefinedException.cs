@@ -1,6 +1,7 @@
 ﻿using System;
+using NewOrbit.Messaging.Abstractions;
 
-namespace NewOrbit.Messaging
+namespace NewOrbit.Messaging.Exceptions
 {
     public class NoCommandHandlersDefinedException : InvalidOperationException
     {

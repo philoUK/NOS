@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using NewOrbit.Messaging.Abstractions;
+using NewOrbit.Messaging.Exceptions;
 
 namespace NewOrbit.Messaging
 {
@@ -19,9 +21,20 @@ namespace NewOrbit.Messaging
         public void Publish(object publisher, IEvent @event)
         {
             this.EnsureThereIsOnlyASinglePublisher(publisher, @event);
+            this.EnsurePublisherIsAuthorised(publisher, @event);
             foreach (var subscriber in this.subscriberFetcher.GetSubscribers(@event))
             {
                 subscriber.Respond(@event);
+            }
+        }
+
+        private void EnsurePublisherIsAuthorised(object publisher, IEvent @event)
+        {
+            var publisherType = this.publisherFetcher.GetPublishers(@event).Single();
+            if (publisher.GetType() != publisherType)
+            {
+                this.logger.LogUnregisteredPublisherException(publisher,@event);
+                throw new UnregisteredPublisherException(publisher, @event);
             }
         }
 

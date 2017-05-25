@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NewOrbit.Messaging
+namespace NewOrbit.Messaging.Abstractions
 {
     public interface ICommand
     {

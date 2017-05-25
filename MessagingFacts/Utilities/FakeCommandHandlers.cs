@@ -1,5 +1,6 @@
 ﻿using System;
 using NewOrbit.Messaging;
+using NewOrbit.Messaging.Abstractions;
 
 namespace MessagingFacts.Utilities
 {

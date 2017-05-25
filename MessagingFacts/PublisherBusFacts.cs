@@ -1,5 +1,6 @@
 ﻿using MessagingFacts.Utilities;
 using NewOrbit.Messaging;
+using NewOrbit.Messaging.Abstractions;
 using Xunit;
 
 namespace MessagingFacts
@@ -28,34 +29,15 @@ namespace MessagingFacts
             builder.AssertTooManyPublishersFoundErrorThrownAndLogged();
         }
 
-        //[Fact]
-        //public void DealsWithNoSubscribersToAGivenEvent()
-        //{
-        //    var builder = new PublisherBusTester()
-        //        .GivenNoSubscribersForEvent<FakeEvent>();
-        //    var @event = new FakeEvent();
-        //    builder.Execute(this,new FakeEvent());
-        //    Assert.False(@event.HandledBySubscriberOne);
-        //    Assert.False(@event.HandledBySubscriberTwo);
-        //}
+        [Fact]
+        public void UnRegisteredPublisherFails()
+        {
+            var builder = new PublisherBusTester()
+                .GivenPublisher<FakeEvent, FakeEvent>();
+            var @event = new FakeEvent();
+            builder.Execute(this, @event);
+            builder.AssertUnregisteredPublisherErrorThrownAndLogged();
+        }
 
-        //[Fact]
-        //public void PassesEventToEachSubscriber()
-        //{
-        //    var builder = new PublisherBusTester()
-        //        .GivenPublisher<FakeEvent, PublisherBusFacts>()
-        //        .GivenSubscriber<FakeEvent, FakeEventSubscriberOne>()
-        //        .GivenSubscriber<FakeEvent, FakeEventSubscriberTwo>();
-        //    var @event = new FakeEvent();
-        //    builder.Execute(this,@event);
-        //    Assert.True(@event.HandledBySubscriberOne);
-        //    Assert.True(@event.HandledBySubscriberTwo);
-        //}
-
-        //[Fact]
-        //public void OnlyAllowsASinglePublisher()
-        //{
-
-        //}
     }
 }

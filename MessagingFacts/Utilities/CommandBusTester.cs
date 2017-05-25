@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Moq;
 using NewOrbit.Messaging;
+using NewOrbit.Messaging.Abstractions;
+using NewOrbit.Messaging.Exceptions;
 using Xunit;
 
 namespace MessagingFacts.Utilities

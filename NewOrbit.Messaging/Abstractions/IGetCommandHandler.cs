@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace NewOrbit.Messaging
+namespace NewOrbit.Messaging.Abstractions
 {
     public interface IGetCommandHandler
     {
