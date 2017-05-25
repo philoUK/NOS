@@ -39,5 +39,17 @@ namespace MessagingFacts
             builder.AssertUnregisteredPublisherErrorThrownAndLogged();
         }
 
+        [Fact]
+        public void SingleAuthorisedPublisherSucceeds()
+        {
+            var builder = new PublisherBusTester()
+                .GivenPublisher<FakeEvent, PublisherBusFacts>()
+                .GivenSubscriber<FakeEvent, FakeEventSubscriberOne>();
+            var @event = new FakeEvent();
+            Assert.False(@event.Published);
+            builder.Execute(this, @event);
+            Assert.True(@event.Published);
+        }
+
     }
 }

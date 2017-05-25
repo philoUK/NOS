@@ -9,6 +9,7 @@ namespace MessagingFacts.Utilities
         public Guid UniqueIdentifier => Guid.NewGuid();
         public bool HandledBySubscriberOne { get; set; }
         public bool HandledBySubscriberTwo { get; set; }
+        public bool Published { get; set; }
     }
 
     internal class FakeEventSubscriberOne : ISubscribeToEventOf<FakeEvent>
@@ -16,6 +17,7 @@ namespace MessagingFacts.Utilities
         public void HandleEvent(FakeEvent @event)
         {
             @event.HandledBySubscriberOne = true;
+            @event.Published = true;
         }
 
         public void Respond(IEvent @event)
