@@ -11,4 +11,16 @@ namespace TestExtras
     {
         
     }
+
+    public class BadCommand : ICommand
+    {
+    }
+
+    public class BadCommandHandler1 : IHandleCommandsOf<BadCommand>
+    {
+    }
+
+    public class BadCommandHandler2 : IHandleCommandsOf<BadCommand>
+    {
+    }
 }

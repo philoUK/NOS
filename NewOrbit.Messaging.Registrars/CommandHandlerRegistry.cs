@@ -37,7 +37,11 @@ namespace NewOrbit.Messaging.Registrars
             var key = command.GetType();
             if (this.cachedHandlers.ContainsKey(key))
             {
-                return this.cachedHandlers[key].FirstOrDefault();
+                if (this.cachedHandlers[key].Count > 1)
+                {
+                    throw new MultipleCommandHandlersFoundException(command);
+                }
+                return this.cachedHandlers[key].Single();
             }
             return null;
         }

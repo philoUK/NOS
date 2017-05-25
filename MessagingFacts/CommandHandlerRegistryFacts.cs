@@ -28,5 +28,12 @@ namespace MessagingFacts
             var sut = new CommandHandlerRegistry();
             Assert.Equal(typeof(ExternalCommandHandler), sut.GetHandlerFor(new ExternalCommand()));
         }
+
+        [Fact]
+        public void MultipleHandlersNotAllowed()
+        {
+            var sut = new CommandHandlerRegistry();
+            Assert.Throws<MultipleCommandHandlersFoundException>(() => sut.GetHandlerFor(new BadCommand()));
+        }
     }
 }
