@@ -24,5 +24,15 @@ namespace MessagingFacts
             m.CheckCommandWasNotSubmitted();
         }
 
+        [Fact]
+        public void SingleRegisteredHandlerQueuesTheCommand()
+        {
+            var m = new DeferredCommandBusTestBuilder()
+                .WithHandlerForCommand<TestCommand>(this.GetType())
+                .WithCommand(new TestCommand())
+                .Submit();
+            m.CheckCommandWasSubmitted();
+        }
+
     }
 }

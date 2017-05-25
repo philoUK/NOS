@@ -21,6 +21,12 @@ namespace MessagingFacts.Builders
                 Times.Never());
         }
 
+        public void CheckCommandWasSubmitted()
+        {
+            this.mechanism.Verify(m => m.Defer(It.Is<ICommand>(cmd => cmd == this.command)),
+                Times.AtLeastOnce);
+        }
+
         public DeferredCommandBusTestBuilder WithNoHandlersForCommand<T>() where T: ICommand
         {
             var key = typeof(T);
@@ -46,6 +52,20 @@ namespace MessagingFacts.Builders
             return this;
         }
 
+        public DeferredCommandBusTestBuilder WithHandlerForCommand<T>(Type registeredType)
+        {
+            var key = typeof(T);
+            if (this.handlers.ContainsKey(key))
+            {
+                this.handlers[key] = registeredType;
+            }
+            else
+            {
+                this.handlers.Add(key, registeredType);
+            }
+            return this;
+        }
+
         private Type GetHandler()
         {
             var key = this.command?.GetType() ?? typeof(object);
@@ -67,6 +87,9 @@ namespace MessagingFacts.Builders
             {
             }
         }
+
+
+
     }
 
 }

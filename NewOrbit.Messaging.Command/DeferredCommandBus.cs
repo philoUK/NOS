@@ -13,12 +13,17 @@
 
         public void Submit(ICommand command)
         {
+            EnsureThereIsASingleHandlerAvailable(command);
+            this.mechanism.Defer(command);
+        }
+
+        private void EnsureThereIsASingleHandlerAvailable(ICommand command)
+        {
             var hasHandler = this.registry.GetHandlerFor(command);
             if (hasHandler == null)
             {
                 throw new NoCommandHandlerDefinedException(command);
             }
-            this.mechanism.Defer(command);
         }
     }
 }
