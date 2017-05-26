@@ -6,14 +6,6 @@ namespace MessagingFacts
 {
     public class DeferredCommandBusFacts
     {
-        // if the command does not have a 
-        // handler, throw an exception
-
-        // The command must have an Id
-
-        // if the deferral mechanism isn't working
-        // throw an exception
-
         [Fact]
         public void NoRegisteredHandlerThrowsAnException()
         {
