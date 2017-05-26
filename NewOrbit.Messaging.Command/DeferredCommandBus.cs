@@ -2,7 +2,7 @@
 {
     public class DeferredCommandBus
     {
-        private IDeferredCommandMechanism mechanism;
+        private readonly IDeferredCommandMechanism mechanism;
         private readonly ICommandHandlerRegistry registry;
 
         public DeferredCommandBus(IDeferredCommandMechanism mechanism, ICommandHandlerRegistry registry)

@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NewOrbit.Messaging.Command.Azure\NewOrbit.Messaging.Command.Azure.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Command\NewOrbit.Messaging.Command.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Registrars\NewOrbit.Messaging.Registrars.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging\NewOrbit.Messaging.csproj" />

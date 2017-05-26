@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Registra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestExtras", "TestExtras\TestExtras.csproj", "{F8DA5D3B-123C-485C-8BCE-214DE4935F25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Command.Azure", "NewOrbit.Messaging.Command.Azure\NewOrbit.Messaging.Command.Azure.csproj", "{BEC08035-8E5C-4FEA-A8A1-6C68CE2ADAEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Shared", "NewOrbit.Messaging.Shared\NewOrbit.Messaging.Shared.csproj", "{6AF8CC1B-73BB-4B49-8B93-002CCEE7569B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +47,14 @@ Global
 		{F8DA5D3B-123C-485C-8BCE-214DE4935F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8DA5D3B-123C-485C-8BCE-214DE4935F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8DA5D3B-123C-485C-8BCE-214DE4935F25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEC08035-8E5C-4FEA-A8A1-6C68CE2ADAEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEC08035-8E5C-4FEA-A8A1-6C68CE2ADAEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEC08035-8E5C-4FEA-A8A1-6C68CE2ADAEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEC08035-8E5C-4FEA-A8A1-6C68CE2ADAEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AF8CC1B-73BB-4B49-8B93-002CCEE7569B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AF8CC1B-73BB-4B49-8B93-002CCEE7569B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AF8CC1B-73BB-4B49-8B93-002CCEE7569B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AF8CC1B-73BB-4B49-8B93-002CCEE7569B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,5 +65,7 @@ Global
 		{A90C2D15-C19D-42C0-984F-78EA2D66E887} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
 		{FE80C1C2-3E00-417B-8297-282F95E2B753} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
 		{F8DA5D3B-123C-485C-8BCE-214DE4935F25} = {F4E3B872-7B9C-40D3-9C4C-B7F4EBA1E33C}
+		{BEC08035-8E5C-4FEA-A8A1-6C68CE2ADAEF} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
+		{6AF8CC1B-73BB-4B49-8B93-002CCEE7569B} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
 	EndGlobalSection
 EndGlobal

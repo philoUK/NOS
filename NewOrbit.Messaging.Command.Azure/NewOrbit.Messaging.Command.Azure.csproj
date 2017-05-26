@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WindowsAzure.Storage" Version="8.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NewOrbit.Messaging.Command\NewOrbit.Messaging.Command.csproj" />
+    <ProjectReference Include="..\NewOrbit.Messaging.Shared\NewOrbit.Messaging.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

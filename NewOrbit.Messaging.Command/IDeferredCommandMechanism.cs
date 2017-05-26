@@ -1,7 +1,9 @@
-﻿namespace NewOrbit.Messaging.Command
+﻿using System.Threading.Tasks;
+
+namespace NewOrbit.Messaging.Command
 {
     public interface IDeferredCommandMechanism
     {
-        void Defer(ICommand command);
+        Task Defer(ICommand command);
     }
 }
