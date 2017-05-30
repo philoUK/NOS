@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
@@ -38,7 +39,8 @@ namespace NewOrbit.Messaging.Command.Azure
         {
             var storageAccount = CloudStorageAccount.Parse(this.config.ConnectionString);
             var client = storageAccount.CreateCloudQueueClient();
-            var queue = client.GetQueueReference(this.config.CommandQueue);
+            var cmdType = Type.GetType(msg.CommandType);
+            var queue = client.GetQueueReference(this.config.CommandQueue(cmdType));
             await queue.CreateIfNotExistsAsync().ConfigureAwait(false);
             await queue.AddMessageAsync(new CloudQueueMessage(msg.ToJson())).ConfigureAwait(false);
         }
