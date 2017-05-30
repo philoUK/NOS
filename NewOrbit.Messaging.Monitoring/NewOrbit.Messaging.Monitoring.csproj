@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NewOrbit.Messaging.Monitoring\NewOrbit.Messaging.Monitoring.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging\NewOrbit.Messaging.csproj" />
   </ItemGroup>
 

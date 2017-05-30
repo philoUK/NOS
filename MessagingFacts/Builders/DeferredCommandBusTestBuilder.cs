@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using MessagingFacts.Messages;
 using Moq;
 using NewOrbit.Messaging;
 using NewOrbit.Messaging.Command;
+using NewOrbit.Messaging.Monitoring.Events;
 using Xunit;
 
 namespace MessagingFacts.Builders
@@ -12,7 +14,7 @@ namespace MessagingFacts.Builders
     {
         private readonly Dictionary<Type, Type> handlers = new Dictionary<Type, Type>();
         private readonly Mock<IDeferredCommandMechanism> mechanism = new Mock<IDeferredCommandMechanism>();
-
+        private readonly Mock<IEventBus> eventBus = new Mock<IEventBus>();
         private ICommand command;
 
         public void CheckCommandWasNotSubmitted()
@@ -25,6 +27,14 @@ namespace MessagingFacts.Builders
         {
             this.mechanism.Verify(m => m.Defer(It.Is<ICommand>(cmd => cmd == this.command)),
                 Times.AtLeastOnce);
+        }
+
+        public void CheckCommandQueuedEventRaised()
+        {
+            this.eventBus.Verify(m => m.Publish(
+                    It.Is<IEvent>(@evt => ((CommandWasQueuedEvent) evt).CommandName ==
+                                          this.command.GetType().AssemblyQualifiedName)),
+                Times.Once());
         }
 
         public DeferredCommandBusTestBuilder WithNoHandlersForCommand<T>() where T: ICommand
@@ -43,12 +53,12 @@ namespace MessagingFacts.Builders
             return this;
         }
 
-        public DeferredCommandBusTestBuilder Submit()
+        public async Task<DeferredCommandBusTestBuilder> Submit()
         {
             var registry = new Mock<ICommandHandlerRegistry>();
             registry.Setup(r => r.GetHandlerFor(It.IsAny<ICommand>()))
                 .Returns(this.GetHandler());
-            this.Defer(registry);
+            await this.Defer(registry).ConfigureAwait(false);
             return this;
         }
 
@@ -76,19 +86,17 @@ namespace MessagingFacts.Builders
             return null;
         }
 
-        private void Defer(Mock<ICommandHandlerRegistry> registry)
+        private async Task Defer(Mock<ICommandHandlerRegistry> registry)
         {
-            var bus = new DeferredCommandBus(mechanism.Object, registry.Object);
+            var bus = new DeferredCommandBus(mechanism.Object, registry.Object, eventBus.Object);
             try
             {
-                bus.Submit(this.command);
+                await bus.Submit(this.command).ConfigureAwait(false);
             }
             catch (NoCommandHandlerDefinedException)
             {
             }
         }
-
-
 
     }
 
