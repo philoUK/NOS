@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MessagingFacts.Handlers;
 using MessagingFacts.Messages;
+using Microsoft.WindowsAzure.Storage;
 using Moq;
 using NewOrbit.Messaging.Command;
 using NewOrbit.Messaging.Command.Azure;
@@ -31,6 +33,37 @@ namespace MessagingFacts
             Assert.Equal(cmd.GetType().AssemblyQualifiedName, queuedMessage.CommandType);
             Assert.Equal(typeof(TestCommandHandler).AssemblyQualifiedName, queuedMessage.RegisteredHandlerType);
             Assert.Equal(cmd.ToJson(), queuedMessage.CommandJson);
+        }
+
+        [Fact]
+        public async Task UsesSpecifiedMessageQueue()
+        {
+            var registry = this.CreateRegisty();
+            var queueName = "azure-commandmechanism-tests";
+            var config = new Mock<IAzureStorageQueueConfig>();
+            config.SetupProperty(c => c.ConnectionString, "UseDevelopmentStorage=true");
+            config.Setup(c => c.CommandQueue(It.Is<Type>(arg => arg == typeof(TestCommand))))
+                .Returns(queueName);
+            var sut = new AzureStorageQueueCommandMechanism(registry.Object, config.Object);
+            await sut.Defer(new TestCommand());
+            Assert.True(await this.QueueExists(queueName));
+            await this.DeleteQueue(queueName);
+        }
+
+        private async Task<bool> QueueExists(string queueName)
+        {
+            var storageAccount = CloudStorageAccount.Parse("UseDevelopmentStorage=true");
+            var client = storageAccount.CreateCloudQueueClient();
+            var queue = client.GetQueueReference(queueName);
+            return await queue.ExistsAsync().ConfigureAwait(false);
+        }
+
+        private async Task DeleteQueue(string queueName)
+        {
+            var storageAccount = CloudStorageAccount.Parse("UseDevelopmentStorage=true");
+            var client = storageAccount.CreateCloudQueueClient();
+            var queue = client.GetQueueReference(queueName);
+            await queue.DeleteIfExistsAsync().ConfigureAwait(false);
         }
     }
 
