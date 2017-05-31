@@ -27,7 +27,7 @@ namespace NewOrbit.Messaging.Command.Azure
         {
             var msg = new QueueWrappedMessage
             {
-                RegisteredHandlerType = this.registry.GetHandlerFor(command).AssemblyQualifiedName,
+                CommandId = command.Id,
                 Date = DateTime.UtcNow,
                 CommandType = command.GetType().AssemblyQualifiedName,
                 CommandJson = command.ToJson()

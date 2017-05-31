@@ -31,7 +31,7 @@ namespace MessagingFacts
             var queuedMessage = sut.Message;
             Assert.NotNull(queuedMessage);
             Assert.Equal(cmd.GetType().AssemblyQualifiedName, queuedMessage.CommandType);
-            Assert.Equal(typeof(TestCommandHandler).AssemblyQualifiedName, queuedMessage.RegisteredHandlerType);
+            Assert.Equal(cmd.Id, queuedMessage.CommandId);
             Assert.Equal(cmd.ToJson(), queuedMessage.CommandJson);
         }
 

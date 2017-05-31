@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NewOrbit.Messaging.Command\NewOrbit.Messaging.Command.csproj" />
+    <ProjectReference Include="..\NewOrbit.Messaging.Registrars\NewOrbit.Messaging.Registrars.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Shared\NewOrbit.Messaging.Shared.csproj" />
   </ItemGroup>
 

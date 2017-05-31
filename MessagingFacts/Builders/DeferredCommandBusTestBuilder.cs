@@ -88,7 +88,7 @@ namespace MessagingFacts.Builders
 
         private async Task Defer(Mock<ICommandHandlerRegistry> registry)
         {
-            var bus = new DeferredCommandBus(mechanism.Object, registry.Object, eventBus.Object);
+            var bus = new DeferredClientCommandBus(mechanism.Object, registry.Object, eventBus.Object);
             try
             {
                 await bus.Submit(this.command).ConfigureAwait(false);

@@ -2,7 +2,7 @@
 
 namespace NewOrbit.Messaging
 {
-    public interface ICommandBus
+    public interface IClientCommandBus
     {
         Task Submit(ICommand command);
     }

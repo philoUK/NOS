@@ -1,15 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using NewOrbit.Messaging.Monitoring.Events;
 
 namespace NewOrbit.Messaging.Command
 {
-    public class DeferredCommandBus : ICommandBus
+    public class DeferredClientCommandBus : IClientCommandBus
     {
         private readonly IDeferredCommandMechanism mechanism;
         private readonly ICommandHandlerRegistry registry;
         private readonly IEventBus eventBus;
 
-        public DeferredCommandBus(IDeferredCommandMechanism mechanism, ICommandHandlerRegistry registry, IEventBus eventBus)
+        public DeferredClientCommandBus(IDeferredCommandMechanism mechanism, ICommandHandlerRegistry registry, IEventBus eventBus)
         {
             this.mechanism = mechanism;
             this.registry = registry;
@@ -18,9 +19,18 @@ namespace NewOrbit.Messaging.Command
 
         public async Task Submit(ICommand command)
         {
-            EnsureThereIsASingleHandlerAvailable(command);
+            this.EnsureCommandHasAValidId(command);
+            this.EnsureThereIsASingleHandlerAvailable(command);
             await this.SubmitCommand(command).ConfigureAwait(false);
             await this.NotifyCommandWasSubmitted(command).ConfigureAwait(false);
+        }
+
+        private void EnsureCommandHasAValidId(ICommand command)
+        {
+            if (string.IsNullOrWhiteSpace(command.Id))
+            {
+                throw new ArgumentException("Command Id must be set");
+            }
         }
 
         private void EnsureThereIsASingleHandlerAvailable(ICommand command)

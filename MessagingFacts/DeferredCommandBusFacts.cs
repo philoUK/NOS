@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
 using System.Threading.Tasks;
 using MessagingFacts.Builders;
 using MessagingFacts.Messages;
@@ -18,24 +18,38 @@ namespace MessagingFacts
             m.CheckCommandWasNotSubmitted();
         }
 
-        [Fact]
-        public async Task SingleRegisteredHandlerQueuesTheCommand()
+        private Task<DeferredCommandBusTestBuilder> CreateBuilder()
         {
-            var m = await new DeferredCommandBusTestBuilder()
+            return new DeferredCommandBusTestBuilder()
                 .WithHandlerForCommand<TestCommand>(this.GetType())
                 .WithCommand(new TestCommand())
                 .Submit();
+        }
+
+        [Fact]
+        public async Task SingleRegisteredHandlerQueuesTheCommand()
+        {
+            var m = await CreateBuilder();
             m.CheckCommandWasSubmitted();
         }
 
         [Fact]
         public async Task SingleRegisteredHandlerRaisesCommandQueuedEvent()
         {
-            var m = await new DeferredCommandBusTestBuilder()
-                .WithHandlerForCommand<TestCommand>(this.GetType())
-                .WithCommand(new TestCommand())
-                .Submit();
+            var m = await CreateBuilder();
             m.CheckCommandQueuedEventRaised();
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("\n")]
+        public async Task CommandsMustHaveAValidId(string id)
+        {
+            var m = new DeferredCommandBusTestBuilder()
+                .WithHandlerForCommand<TestCommand>(this.GetType())
+                .WithCommand(new TestCommand {Id = id});
+            await Assert.ThrowsAsync<ArgumentException>(() => m.Submit());
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using NewOrbit.Messaging;
+﻿using System;
+using NewOrbit.Messaging;
 
 namespace MessagingFacts.Messages
 {
@@ -8,5 +9,7 @@ namespace MessagingFacts.Messages
     /// </summary>
     public class OrphanedTestCommand : ICommand
     {
+        public string Id => Guid.NewGuid().ToString();
+
     }
 }
