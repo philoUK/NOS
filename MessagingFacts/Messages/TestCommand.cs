@@ -3,7 +3,7 @@ using NewOrbit.Messaging;
 
 namespace MessagingFacts.Messages
 {
-    class TestCommand : ICommand
+    public class TestCommand : ICommand
     {
         public TestCommand()
         {

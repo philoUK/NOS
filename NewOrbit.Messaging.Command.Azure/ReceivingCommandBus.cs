@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using NewOrbit.Messaging.Monitoring.Events;
 using NewOrbit.Messaging.Registrars;
@@ -23,8 +22,9 @@ namespace NewOrbit.Messaging.Command.Azure
         public async Task Submit(QueueWrappedMessage buildMessage)
         {
             var cmd = await this.ExtractCommand(buildMessage).ConfigureAwait(false);
-            var handler = this.GetHandler(cmd);
+            var handler = await this.GetHandler(cmd).ConfigureAwait(false);
             this.DispatchToHandler(cmd, handler);
+            await this.PublishSuccess(cmd).ConfigureAwait(false);
         }
 
         private async Task<ICommand> ExtractCommand(QueueWrappedMessage msg)
@@ -53,10 +53,23 @@ namespace NewOrbit.Messaging.Command.Azure
             await this.eventBus.Publish(@event).ConfigureAwait(false);
         }
 
-        private object GetHandler(ICommand cmd)
+        private async Task<object> GetHandler(ICommand cmd)
         {
-            var handlingType = this.registry.GetHandlerFor(cmd);
-            return Activator.CreateInstance(handlingType);
+            try
+            {
+                var handlingType = this.registry.GetHandlerFor(cmd);
+                return Activator.CreateInstance(handlingType);
+            }
+            catch (NoCommandHandlerDefinedException)
+            {
+                var @event = new CommandDidNotDefineAHandlerEvent
+                {
+                    CommandId = cmd.Id,
+                    CommandType = cmd.GetType().AssemblyQualifiedName
+                };
+                await this.eventBus.Publish(@event).ConfigureAwait(false);
+                throw;
+            }
         }
 
         private void DispatchToHandler(ICommand cmd, object handler)
@@ -71,6 +84,16 @@ namespace NewOrbit.Messaging.Command.Azure
                 var method = interfaceType.GetMethod("Handle");
                 method.Invoke(handler, new object[] {cmd});
             }
+        }
+
+        private async Task PublishSuccess(ICommand cmd)
+        {
+            var @event = new CommandWasDispatchedEvent
+            {
+                CommandId = cmd.Id,
+                CommandType = cmd.GetType().AssemblyQualifiedName
+            };
+            await this.eventBus.Publish(@event).ConfigureAwait(false);
         }
     }
 }

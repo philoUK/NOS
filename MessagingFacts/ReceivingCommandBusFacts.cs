@@ -23,5 +23,26 @@ namespace MessagingFacts
             builder.VerifyMessageUnpackingExceptionIsThrown();
             builder.VerifyUnpackingErrorEventIsRaised();
         }
+
+        [Fact]
+        public async Task NoHandlersAvailable()
+        {
+            var builder = new ReceivingCommandBusTestBuilder()
+                .GivenACommand()
+                .GivenNoCommandHandlers();
+            await builder.Receive();
+            builder.VerifyNoCommandHandlerDefinedExceptionIsThrown();
+            builder.VerifyNoHandlerErrorEventIsRaised();
+        }
+
+        [Fact]
+        public async Task NormalMessageGetsDispatchAppropriately()
+        {
+            var builder = new ReceivingCommandBusTestBuilder()
+                .GivenACommand()
+                .GivenACommandHandler();
+            await builder.Receive();
+            builder.VerifyCommandHandledEventIsRaised();
+        }
     }
 }
