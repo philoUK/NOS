@@ -48,10 +48,10 @@ namespace NewOrbit.Messaging.Command
         private static IEnumerable<Assembly> GetReferencingAssemblies()
         {
             var assemblies = new List<Assembly>();
-            var dependencies = DependencyContext.Default.RuntimeLibraries;
+            var dependencies = DependencyContext.Load(Assembly.GetEntryAssembly()).RuntimeLibraries;
             foreach (var library in dependencies)
             {
-                if (IsCandidateLibrary(library, "NewOrbit.Messaging.Registrars"))
+                if (IsCandidateLibrary(library, "NewOrbit.Messaging"))
                 {
                     var assembly = Assembly.Load(new AssemblyName(library.Name));
                     assemblies.Add(assembly);
@@ -62,7 +62,7 @@ namespace NewOrbit.Messaging.Command
 
         private static bool IsCandidateLibrary(RuntimeLibrary library, string assemblyName)
         {
-            return library.Dependencies.Any(d => d.Name.StartsWith(assemblyName));
+            return library.Dependencies.Any(d => d.Name == assemblyName);
         }
     }
 }

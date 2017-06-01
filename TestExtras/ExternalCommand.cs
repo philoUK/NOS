@@ -1,6 +1,5 @@
 ﻿using System;
 using NewOrbit.Messaging;
-using NewOrbit.Messaging.Registrars;
 
 namespace TestExtras
 {
