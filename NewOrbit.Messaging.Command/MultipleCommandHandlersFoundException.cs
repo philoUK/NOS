@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NewOrbit.Messaging.Registrars
+namespace NewOrbit.Messaging.Command
 {
     public class MultipleCommandHandlersFoundException : Exception
     {

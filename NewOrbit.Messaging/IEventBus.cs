@@ -4,6 +4,6 @@ namespace NewOrbit.Messaging
 {
     public interface IEventBus
     {
-        Task Publish(IEvent @event);
+        Task Publish(object publisher, IEvent @event);
     }
 }

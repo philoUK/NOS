@@ -8,7 +8,9 @@ using NewOrbit.Messaging.Shared;
 
 namespace NewOrbit.Messaging.Command.Azure
 {
-    public class ReceivingCommandBus
+    public class ReceivingCommandBus : IPublishEventsOf<CommandCouldNotBeReadEvent>,
+        IPublishEventsOf<CommandDidNotDefineAHandlerEvent>,
+        IPublishEventsOf<CommandWasDispatchedEvent>
     {
         private ICommandHandlerRegistry registry;
         private IEventBus eventBus;
@@ -52,7 +54,7 @@ namespace NewOrbit.Messaging.Command.Azure
                 CommandType = msg.CommandType,
                 ErrorMessage = errMessage
             };
-            await this.eventBus.Publish(@event).ConfigureAwait(false);
+            await this.eventBus.Publish(this,@event).ConfigureAwait(false);
         }
 
         private async Task<object> GetHandler(ICommand cmd)
@@ -69,7 +71,7 @@ namespace NewOrbit.Messaging.Command.Azure
                     CommandId = cmd.Id,
                     CommandType = cmd.GetType().AssemblyQualifiedName
                 };
-                await this.eventBus.Publish(@event).ConfigureAwait(false);
+                await this.eventBus.Publish(this,@event).ConfigureAwait(false);
                 throw;
             }
         }
@@ -95,7 +97,7 @@ namespace NewOrbit.Messaging.Command.Azure
                 CommandId = cmd.Id,
                 CommandType = cmd.GetType().AssemblyQualifiedName
             };
-            await this.eventBus.Publish(@event).ConfigureAwait(false);
+            await this.eventBus.Publish(this,@event).ConfigureAwait(false);
         }
     }
 }

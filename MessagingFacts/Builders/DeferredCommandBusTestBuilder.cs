@@ -31,6 +31,7 @@ namespace MessagingFacts.Builders
         public void CheckCommandQueuedEventRaised()
         {
             this.eventBus.Verify(m => m.Publish(
+                    It.IsAny<object>(),
                     It.Is<IEvent>(@evt => ((CommandWasQueuedEvent) evt).CommandName ==
                                           this.command.GetType().AssemblyQualifiedName)),
                 Times.Once());

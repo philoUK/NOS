@@ -1,4 +1,4 @@
-﻿namespace NewOrbit.Messaging.Registrars
+﻿namespace NewOrbit.Messaging
 {
     public interface IHandleCommandsOf<T> where T: ICommand
     {

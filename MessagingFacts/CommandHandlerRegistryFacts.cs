@@ -1,5 +1,6 @@
 ﻿using MessagingFacts.Handlers;
 using MessagingFacts.Messages;
+using NewOrbit.Messaging.Command;
 using NewOrbit.Messaging.Registrars;
 using TestExtras;
 using Xunit;

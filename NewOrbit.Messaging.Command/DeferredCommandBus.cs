@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using NewOrbit.Messaging.Monitoring.Events;
+using NewOrbit.Messaging.Registrars;
 
 namespace NewOrbit.Messaging.Command
 {
-    public class DeferredClientCommandBus : IClientCommandBus
+    public class DeferredClientCommandBus : IClientCommandBus, IPublishEventsOf<CommandWasQueuedEvent>
     {
         private readonly IDeferredCommandMechanism mechanism;
         private readonly ICommandHandlerRegistry registry;
@@ -50,7 +51,7 @@ namespace NewOrbit.Messaging.Command
         private async Task NotifyCommandWasSubmitted(ICommand command)
         {
             var evt = new CommandWasQueuedEvent {CommandName = command.GetType().AssemblyQualifiedName};
-            await this.eventBus.Publish(evt).ConfigureAwait(false);
+            await this.eventBus.Publish(this,evt).ConfigureAwait(false);
         }
     }
 }

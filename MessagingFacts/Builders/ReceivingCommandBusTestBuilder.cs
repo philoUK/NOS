@@ -69,7 +69,7 @@ namespace MessagingFacts.Builders
 
         public void VerifyUnpackingErrorEventIsRaised()
         {
-            this.eventBus.Verify(bus => bus.Publish(It.IsAny<CommandCouldNotBeReadEvent>()), Times.Once());
+            this.eventBus.Verify(bus => bus.Publish(It.IsAny<object>(), It.IsAny<CommandCouldNotBeReadEvent>()), Times.Once());
         }
 
         public ReceivingCommandBusTestBuilder GivenNoCommandHandlers()
@@ -88,7 +88,7 @@ namespace MessagingFacts.Builders
 
         public void VerifyNoHandlerErrorEventIsRaised()
         {
-            this.eventBus.Verify(bus => bus.Publish(It.IsAny<CommandDidNotDefineAHandlerEvent>()), Times.Once());
+            this.eventBus.Verify(bus => bus.Publish(It.IsAny<object>(), It.IsAny<CommandDidNotDefineAHandlerEvent>()), Times.Once());
         }
 
         public ReceivingCommandBusTestBuilder GivenACommand()
@@ -106,7 +106,7 @@ namespace MessagingFacts.Builders
 
         public void VerifyCommandHandledEventIsRaised()
         {
-            this.eventBus.Verify(bus => bus.Publish(It.IsAny<CommandWasDispatchedEvent>()), Times.Once());
+            this.eventBus.Verify(bus => bus.Publish(It.IsAny<object>(), It.IsAny<CommandWasDispatchedEvent>()), Times.Once());
         }
     }
 }

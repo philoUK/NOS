@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyModel;
-using NewOrbit.Messaging.Command;
 
-namespace NewOrbit.Messaging.Registrars
+namespace NewOrbit.Messaging.Command
 {
     public class CommandHandlerRegistry : ICommandHandlerRegistry
     {
