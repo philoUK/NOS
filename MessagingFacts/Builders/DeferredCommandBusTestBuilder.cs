@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MessagingFacts.Messages;
 using Moq;
-using NewOrbit.Messaging;
 using NewOrbit.Messaging.Command;
 using NewOrbit.Messaging.Monitoring.Events;
-using Xunit;
+using NewOrbit.Messaging;
 
 namespace MessagingFacts.Builders
 {

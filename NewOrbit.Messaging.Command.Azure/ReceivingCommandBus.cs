@@ -12,11 +12,13 @@ namespace NewOrbit.Messaging.Command.Azure
     {
         private ICommandHandlerRegistry registry;
         private IEventBus eventBus;
+        private IHandlerFactory handlerFactory;
 
-        public ReceivingCommandBus(ICommandHandlerRegistry registry, IEventBus eventBus)
+        public ReceivingCommandBus(ICommandHandlerRegistry registry, IEventBus eventBus, IHandlerFactory handlerFactory)
         {
             this.registry = registry;
             this.eventBus = eventBus;
+            this.handlerFactory = handlerFactory;
         }
 
         public async Task Submit(QueueWrappedMessage buildMessage)
@@ -58,7 +60,7 @@ namespace NewOrbit.Messaging.Command.Azure
             try
             {
                 var handlingType = this.registry.GetHandlerFor(cmd);
-                return Activator.CreateInstance(handlingType);
+                return this.handlerFactory.Make(handlingType);
             }
             catch (NoCommandHandlerDefinedException)
             {

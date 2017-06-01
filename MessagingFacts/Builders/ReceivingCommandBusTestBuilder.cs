@@ -36,7 +36,7 @@ namespace MessagingFacts.Builders
         {
             try
             {
-                var sut = new ReceivingCommandBus(registry.Object, eventBus.Object);
+                var sut = new ReceivingCommandBus(registry.Object, eventBus.Object, new FakeHandlerFactory());
                 await sut.Submit(this.BuildMessage());
             }
             catch (MessageUnpackingException)
