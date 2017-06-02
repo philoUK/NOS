@@ -5,7 +5,6 @@ using MessagingFacts.Messages;
 using Moq;
 using NewOrbit.Messaging;
 using NewOrbit.Messaging.Event;
-using NewOrbit.Messaging.Registrars;
 using TestExtras;
 using Xunit;
 
@@ -99,6 +98,11 @@ namespace MessagingFacts.Builders
         public void CheckWrongPublisherExceptionThrown()
         {
             Assert.True(this.wrongPublisherExceptionThrown);
+        }
+
+        public DeferredEventBusTestBuilder WithMultiplePublishersForEvent()
+        {
+            return this;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyModel;
+using NewOrbit.Messaging.Shared;
 
 namespace NewOrbit.Messaging.Command
 {
@@ -12,22 +13,16 @@ namespace NewOrbit.Messaging.Command
 
         public CommandHandlerRegistry()
         {
-            foreach (var assembly in GetReferencingAssemblies())
+            foreach (var tuple in ReflectionHelpers.TypesThatImplementInterface(t => t == typeof(IHandleCommandsOf<>),
+                "NewOrbit.Messaging"))
             {
-                foreach (var exportedType in assembly.GetExportedTypes())
+                var eventType = tuple.Item1;
+                var handlerType = tuple.Item2;
+                if (!this.cachedHandlers.ContainsKey(eventType))
                 {
-                    foreach (var interfaceType in exportedType.GetInterfaces()
-                        .Select(i => i.GetTypeInfo())
-                        .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IHandleCommandsOf<>)))
-                    {
-                        var arg = interfaceType.GetGenericArguments()[0];
-                        if (!this.cachedHandlers.ContainsKey(arg))
-                        {
-                            this.cachedHandlers.Add(arg, new List<Type>());
-                        }
-                        this.cachedHandlers[arg].Add(exportedType);
-                    }
+                    this.cachedHandlers.Add(eventType, new List<Type>());
                 }
+                this.cachedHandlers[eventType].Add(handlerType);
             }
         }
 
@@ -45,24 +40,5 @@ namespace NewOrbit.Messaging.Command
             return null;
         }
 
-        private static IEnumerable<Assembly> GetReferencingAssemblies()
-        {
-            var assemblies = new List<Assembly>();
-            var dependencies = DependencyContext.Load(Assembly.GetEntryAssembly()).RuntimeLibraries;
-            foreach (var library in dependencies)
-            {
-                if (IsCandidateLibrary(library, "NewOrbit.Messaging"))
-                {
-                    var assembly = Assembly.Load(new AssemblyName(library.Name));
-                    assemblies.Add(assembly);
-                }
-            }
-            return assemblies;
-        }
-
-        private static bool IsCandidateLibrary(RuntimeLibrary library, string assemblyName)
-        {
-            return library.Dependencies.Any(d => d.Name == assemblyName);
-        }
     }
 }

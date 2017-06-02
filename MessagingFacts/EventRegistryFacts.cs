@@ -1,0 +1,40 @@
+﻿using System.Linq;
+using MessagingFacts.Messages;
+using NewOrbit.Messaging.Event;
+using TestExtras;
+using Xunit;
+
+namespace MessagingFacts
+{
+    public class EventRegistryFacts
+    {
+        // finds none
+        [Fact]
+        public void DoesNotFindAnyPublisher()
+        {
+            var sut = new EventRegistry();
+            Assert.False(sut.GetSubscribers(new OrphanedEvent()).Any());
+        }
+
+
+        // finds 1 in same assembly
+        [Fact]
+        public void FindsPublisherInSameAssembly()
+        {
+            var sut = new EventRegistry();
+            var results = sut.GetSubscribers(new CommandTestedEvent()).ToList();
+            Assert.Equal(1, results.Count);
+            Assert.True(results[0] == typeof(CommandTestedEventSubscriber));
+        }
+
+        // Finds 1 in different assembly
+        [Fact]
+        public void FindsPublisherInDifferentAssembly()
+        {
+            var sut = new EventRegistry();
+            var results = sut.GetSubscribers(new ExternalEvent()).ToList();
+            Assert.Equal(1, results.Count);
+            Assert.True(results[0] == typeof(ExternalEventSubscriber));
+        }
+    }
+}

@@ -1,8 +1,14 @@
 ﻿using NewOrbit.Messaging;
+using NewOrbit.Messaging.Registrars;
 
 namespace MessagingFacts.Messages
 {
-    class CommandTestedEvent : IEvent 
+    public class CommandTestedEvent : IEvent 
     {
+    }
+
+    public class CommandTestedEventSubscriber : ISubscribeToEventsOf<CommandTestedEvent>
+    {
+        
     }
 }
