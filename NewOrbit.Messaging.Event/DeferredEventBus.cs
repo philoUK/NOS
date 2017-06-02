@@ -23,9 +23,10 @@ namespace NewOrbit.Messaging.Event
             this.mechanism = mechanism;
         }
 
-        public async Task Submit(IEvent @event)
+        public async Task Submit(object publisher,IEvent @event)
         {
             this.EnsureThereIsASinglePublisher(@event);
+            this.EnsurePublisherIsCorrect(publisher, @event);
             this.GetSubscribers(@event);
             await this.DispatchToEachSubscriber(@event).ConfigureAwait(false);
             this.LogIfNoSubscribersFound(@event);
@@ -37,6 +38,15 @@ namespace NewOrbit.Messaging.Event
             if (publishingType == null)
             {
                 throw new NoEventPublisherFoundException(@event);
+            }
+        }
+
+        private void EnsurePublisherIsCorrect(object publisher, IEvent @event)
+        {
+            var publishingType = this.publisherRegistry.GetPublisher(@event);
+            if (publishingType != publisher.GetType())
+            {
+                throw new UnauthorizedEventPublisherException(publisher, @event);
             }
         }
 

@@ -6,17 +6,19 @@ using Moq;
 using NewOrbit.Messaging;
 using NewOrbit.Messaging.Event;
 using NewOrbit.Messaging.Registrars;
+using TestExtras;
 using Xunit;
 
 namespace MessagingFacts.Builders
 {
     internal class DeferredEventBusTestBuilder
     {
-        private IEvent _event;
+        private IEvent _event = new CommandTestedEvent();
         private readonly Mock<IEventPublisherRegistry> publisherRegistry = new Mock<IEventPublisherRegistry>();
         private readonly Mock<ILogEventBusMessages> logger = new Mock<ILogEventBusMessages>();
         private readonly Mock<IEventSubscriberRegistry> subscriberRegistry = new Mock<IEventSubscriberRegistry>();
         private readonly Mock<IDeferredEventMechanism> mechanism = new Mock<IDeferredEventMechanism>();
+
         public DeferredEventBusTestBuilder WithNoPublishersForEvent<T>() where T: IEvent
         {
             this.publisherRegistry.Setup(r => r.GetPublisher(It.IsAny<IEvent>()))
@@ -24,29 +26,29 @@ namespace MessagingFacts.Builders
             return this;
         }
 
-        public DeferredEventBusTestBuilder WithEvent()
-        {
-            this._event = new CommandTestedEvent();
-            return this;
-        }
-
         public async Task<DeferredEventBusTestBuilder> Submit()
         {
             try
             {
-                var sut = new DeferredEventBus(this.publisherRegistry.Object, this.logger.Object, this.subscriberRegistry.Object, 
+                var sut = new DeferredEventBus(this.publisherRegistry.Object, this.logger.Object,
+                    this.subscriberRegistry.Object,
                     this.mechanism.Object);
-                await sut.Submit(this._event).ConfigureAwait(false);
+                await sut.Submit(this, this._event).ConfigureAwait(false);
             }
             catch (NoEventPublisherFoundException)
             {
                 noPublisherExceptionThrown = true;
+            }
+            catch (UnauthorizedEventPublisherException)
+            {
+                this.wrongPublisherExceptionThrown = true;
             }
             return this;
         }
 
         private bool noPublisherExceptionThrown = false;
         private int subscriberCount;
+        private bool wrongPublisherExceptionThrown;
 
         public void CheckNoPublisherExceptionThrown()
         {
@@ -56,12 +58,8 @@ namespace MessagingFacts.Builders
         public DeferredEventBusTestBuilder WithPublisherForEvent()
         {
             this.publisherRegistry.Setup(p => p.GetPublisher(It.IsAny<IEvent>()))
-                .Returns(typeof(EventPublisher));
+                .Returns(typeof(DeferredEventBusTestBuilder));
             return this;
-        }
-
-        private class EventPublisher : IPublishEventsOf<CommandTestedEvent>
-        {
         }
 
         public void CheckNoSubscribersWasLogged()
@@ -89,6 +87,18 @@ namespace MessagingFacts.Builders
         {
             this.mechanism.Verify(m => m.Defer(It.IsAny<IEvent>(), It.IsAny<Type>()),
                 Times.Exactly(this.subscriberCount));
+        }
+
+        public DeferredEventBusTestBuilder WithIncorrectPublisherForEvent()
+        {
+            this.publisherRegistry.Setup(r => r.GetPublisher(It.IsAny<IEvent>()))
+                .Returns(typeof(BadCommandHandler1));
+            return this;
+        }
+
+        public void CheckWrongPublisherExceptionThrown()
+        {
+            Assert.True(this.wrongPublisherExceptionThrown);
         }
     }
 }

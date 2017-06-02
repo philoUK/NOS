@@ -12,7 +12,6 @@ namespace MessagingFacts
         {
             var m = await new DeferredEventBusTestBuilder()
                 .WithNoPublishersForEvent<CommandTestedEvent>()
-                .WithEvent()
                 .Submit();
             m.CheckNoPublisherExceptionThrown();
         }
@@ -22,7 +21,6 @@ namespace MessagingFacts
         {
             var m = await new DeferredEventBusTestBuilder()
                 .WithPublisherForEvent()
-                .WithEvent()
                 .Submit();
             m.CheckNoSubscribersWasLogged();
         }
@@ -41,7 +39,10 @@ namespace MessagingFacts
         [Fact]
         public async Task TheWrongPublisherShouldThrowAnException()
         {
-            
+            var m = await new DeferredEventBusTestBuilder()
+                .WithIncorrectPublisherForEvent()
+                .Submit();
+            m.CheckWrongPublisherExceptionThrown();
         }
     }
 }
