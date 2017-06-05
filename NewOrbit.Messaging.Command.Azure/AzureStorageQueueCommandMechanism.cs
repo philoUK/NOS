@@ -22,23 +22,23 @@ namespace NewOrbit.Messaging.Command.Azure
             await this.QueueMessage(this.ConstructMessage(command)).ConfigureAwait(false);
         }
 
-        private QueueWrappedMessage ConstructMessage(ICommand command)
+        private QueueWrappedCommandMessage ConstructMessage(ICommand command)
         {
-            var msg = new QueueWrappedMessage
+            var msg = new QueueWrappedCommandMessage
             {
-                MessageId = command.Id,
+                CommandId = command.Id,
                 Date = DateTime.UtcNow,
-                MessageType = command.GetType().AssemblyQualifiedName,
-                MessageJson = command.ToJson()
+                CommandType = command.GetType().AssemblyQualifiedName,
+                CommandJson = command.ToJson()
             };
             return msg;
         }
 
-        protected virtual async Task QueueMessage(QueueWrappedMessage msg)
+        protected virtual async Task QueueMessage(QueueWrappedCommandMessage msg)
         {
             var storageAccount = CloudStorageAccount.Parse(this.config.ConnectionString);
             var client = storageAccount.CreateCloudQueueClient();
-            var cmdType = Type.GetType(msg.MessageType);
+            var cmdType = Type.GetType(msg.CommandType);
             var queue = client.GetQueueReference(this.config.CommandQueue(cmdType));
             await queue.CreateIfNotExistsAsync().ConfigureAwait(false);
             await queue.AddMessageAsync(new CloudQueueMessage(msg.ToJson())).ConfigureAwait(false);

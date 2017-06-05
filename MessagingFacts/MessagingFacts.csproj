@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NewOrbit.Messaging.Command.Azure\NewOrbit.Messaging.Command.Azure.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Command\NewOrbit.Messaging.Command.csproj" />
+    <ProjectReference Include="..\NewOrbit.Messaging.Event.Azure\NewOrbit.Messaging.Event.Azure.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Event\NewOrbit.Messaging.Event.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Monitoring\NewOrbit.Messaging.Monitoring.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging\NewOrbit.Messaging.csproj" />

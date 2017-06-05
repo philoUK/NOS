@@ -30,9 +30,9 @@ namespace MessagingFacts
             await sut.Defer(cmd);
             var queuedMessage = sut.Message;
             Assert.NotNull(queuedMessage);
-            Assert.Equal(cmd.GetType().AssemblyQualifiedName, queuedMessage.MessageType);
-            Assert.Equal(cmd.Id, queuedMessage.MessageId);
-            Assert.Equal(cmd.ToJson(), queuedMessage.MessageJson);
+            Assert.Equal(cmd.GetType().AssemblyQualifiedName, queuedMessage.CommandType);
+            Assert.Equal(cmd.Id, queuedMessage.CommandId);
+            Assert.Equal(cmd.ToJson(), queuedMessage.CommandJson);
         }
 
         [Fact]
@@ -74,12 +74,12 @@ namespace MessagingFacts
         {
         }
 
-        protected override Task QueueMessage(QueueWrappedMessage msg)
+        protected override Task QueueMessage(QueueWrappedCommandMessage msg)
         {
             this.Message = msg;
             return Task.CompletedTask;
         }
 
-        public QueueWrappedMessage Message { get; set; }
+        public QueueWrappedCommandMessage Message { get; set; }
     }
 }

@@ -49,13 +49,13 @@ namespace MessagingFacts.Builders
             }
         }
 
-        private QueueWrappedMessage BuildMessage()
+        private QueueWrappedCommandMessage BuildMessage()
         {
-            return new QueueWrappedMessage
+            return new QueueWrappedCommandMessage
             {
-                MessageId = "38",
-                MessageJson = this.msgJson,
-                MessageType = typeof(TestCommand).AssemblyQualifiedName,
+                CommandId = "38",
+                CommandJson = this.msgJson,
+                CommandType = typeof(TestCommand).AssemblyQualifiedName,
                 Date = DateTime.Now
             };
         }

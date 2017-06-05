@@ -23,7 +23,7 @@ namespace NewOrbit.Messaging.Command.Azure
             this.handlerFactory = handlerFactory;
         }
 
-        public async Task Submit(QueueWrappedMessage buildMessage)
+        public async Task Submit(QueueWrappedCommandMessage buildMessage)
         {
             var cmd = await this.ExtractCommand(buildMessage).ConfigureAwait(false);
             var handler = await this.GetHandler(cmd).ConfigureAwait(false);
@@ -31,27 +31,27 @@ namespace NewOrbit.Messaging.Command.Azure
             await this.PublishSuccess(cmd).ConfigureAwait(false);
         }
 
-        private async Task<ICommand> ExtractCommand(QueueWrappedMessage msg)
+        private async Task<ICommand> ExtractCommand(QueueWrappedCommandMessage msg)
         {
             try
             {
-                var cmdType = Type.GetType(msg.MessageType);
-                return (ICommand) msg.MessageJson.FromJson(cmdType);
+                var cmdType = Type.GetType(msg.CommandType);
+                return (ICommand) msg.CommandJson.FromJson(cmdType);
             }
             catch (Exception ex)
             {
-                var err = $"Failed to Extract a command of type {msg.MessageType} for Command with Id {msg.MessageId}";
+                var err = $"Failed to Extract a command of type {msg.CommandType} for Command with Id {msg.CommandId}";
                 await this.PublishExtractError(err, msg).ConfigureAwait(false);
                 throw new MessageUnpackingException(err, ex);
             }
         }
 
-        private async Task PublishExtractError(string errMessage, QueueWrappedMessage msg)
+        private async Task PublishExtractError(string errMessage, QueueWrappedCommandMessage msg)
         {
             var @event = new CommandCouldNotBeReadEvent
             {
-                CommandId = msg.MessageId,
-                CommandType = msg.MessageType,
+                CommandId = msg.CommandId,
+                CommandType = msg.CommandType,
                 ErrorMessage = errMessage
             };
             await this.eventBus.Publish(this,@event).ConfigureAwait(false);

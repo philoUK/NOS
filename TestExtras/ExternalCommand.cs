@@ -40,6 +40,7 @@ namespace TestExtras
 
     public class BadEvent : IEvent
     {
+        public string Id => Guid.NewGuid().ToString();
     }
 
     public class BadEventPublisher1 : IPublishEventsOf<BadEvent>

@@ -6,5 +6,6 @@ namespace NewOrbit.Messaging.Shared
     {
         string ConnectionString { get; set; }
         string CommandQueue(Type commandType);
+        string EventQueue(Type eventType);
     }
 }
