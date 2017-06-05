@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NewOrbit.Messaging.Command.Azure
+namespace NewOrbit.Messaging.Shared
 {
     public interface IAzureStorageQueueConfig
     {

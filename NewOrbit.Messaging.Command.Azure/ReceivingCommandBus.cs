@@ -35,12 +35,12 @@ namespace NewOrbit.Messaging.Command.Azure
         {
             try
             {
-                var cmdType = Type.GetType(msg.CommandType);
-                return (ICommand) msg.CommandJson.FromJson(cmdType);
+                var cmdType = Type.GetType(msg.MessageType);
+                return (ICommand) msg.MessageJson.FromJson(cmdType);
             }
             catch (Exception ex)
             {
-                var err = $"Failed to Extract a command of type {msg.CommandType} for Command with Id {msg.CommandId}";
+                var err = $"Failed to Extract a command of type {msg.MessageType} for Command with Id {msg.MessageId}";
                 await this.PublishExtractError(err, msg).ConfigureAwait(false);
                 throw new MessageUnpackingException(err, ex);
             }
@@ -50,8 +50,8 @@ namespace NewOrbit.Messaging.Command.Azure
         {
             var @event = new CommandCouldNotBeReadEvent
             {
-                CommandId = msg.CommandId,
-                CommandType = msg.CommandType,
+                CommandId = msg.MessageId,
+                CommandType = msg.MessageType,
                 ErrorMessage = errMessage
             };
             await this.eventBus.Publish(this,@event).ConfigureAwait(false);

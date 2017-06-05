@@ -53,9 +53,9 @@ namespace MessagingFacts.Builders
         {
             return new QueueWrappedMessage
             {
-                CommandId = "38",
-                CommandJson = this.msgJson,
-                CommandType = typeof(TestCommand).AssemblyQualifiedName,
+                MessageId = "38",
+                MessageJson = this.msgJson,
+                MessageType = typeof(TestCommand).AssemblyQualifiedName,
                 Date = DateTime.Now
             };
         }

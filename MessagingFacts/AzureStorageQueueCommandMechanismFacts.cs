@@ -30,9 +30,9 @@ namespace MessagingFacts
             await sut.Defer(cmd);
             var queuedMessage = sut.Message;
             Assert.NotNull(queuedMessage);
-            Assert.Equal(cmd.GetType().AssemblyQualifiedName, queuedMessage.CommandType);
-            Assert.Equal(cmd.Id, queuedMessage.CommandId);
-            Assert.Equal(cmd.ToJson(), queuedMessage.CommandJson);
+            Assert.Equal(cmd.GetType().AssemblyQualifiedName, queuedMessage.MessageType);
+            Assert.Equal(cmd.Id, queuedMessage.MessageId);
+            Assert.Equal(cmd.ToJson(), queuedMessage.MessageJson);
         }
 
         [Fact]
