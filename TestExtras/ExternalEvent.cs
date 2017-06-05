@@ -11,4 +11,9 @@ namespace TestExtras
     {
         
     }
+
+    public class ExternalEventPublisher : IPublishEventsOf<ExternalEvent>
+    {
+        
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using NewOrbit.Messaging;
+using NewOrbit.Messaging.Registrars;
 
 namespace TestExtras
 {
@@ -35,5 +36,18 @@ namespace TestExtras
         {
             
         }
+    }
+
+    public class BadEvent : IEvent
+    {
+    }
+
+    public class BadEventPublisher1 : IPublishEventsOf<BadEvent>
+    {
+    }
+
+    public class BadEventPublisher2 : IPublishEventsOf<BadEvent>
+    {
+        
     }
 }

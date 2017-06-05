@@ -11,4 +11,9 @@ namespace MessagingFacts.Messages
     {
         
     }
+
+    public class CommandTestedEventPublisher : IPublishEventsOf<CommandTestedEvent>
+    {
+        
+    }
 }
