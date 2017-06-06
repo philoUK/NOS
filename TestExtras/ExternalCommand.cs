@@ -11,7 +11,7 @@ namespace TestExtras
 
     public class ExternalCommandHandler : IHandleCommandsOf<ExternalCommand>
     {
-        public void Handle(ExternalCommand command)
+        public void HandleCommand(ExternalCommand command)
         {
             
         }
@@ -24,7 +24,7 @@ namespace TestExtras
 
     public class BadCommandHandler1 : IHandleCommandsOf<BadCommand>
     {
-        public void Handle(BadCommand command)
+        public void HandleCommand(BadCommand command)
         {
             
         }
@@ -32,7 +32,7 @@ namespace TestExtras
 
     public class BadCommandHandler2 : IHandleCommandsOf<BadCommand>
     {
-        public void Handle(BadCommand command)
+        public void HandleCommand(BadCommand command)
         {
             
         }

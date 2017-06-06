@@ -11,7 +11,9 @@ namespace TestExtras
 
     public class ExternalEventSubscriber : ISubscribeToEventsOf<ExternalEvent>
     {
-        
+        public void HandleEvent(ExternalEvent @event)
+        {
+        }
     }
 
     public class ExternalEventPublisher : IPublishEventsOf<ExternalEvent>

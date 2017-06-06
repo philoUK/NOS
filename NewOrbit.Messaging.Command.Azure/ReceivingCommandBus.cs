@@ -78,14 +78,10 @@ namespace NewOrbit.Messaging.Command.Azure
 
         private void DispatchToHandler(ICommand cmd, object handler)
         {
-            var interfaceType = handler.GetType()
-                .GetInterfaces()
-                .Select(i => i.GetTypeInfo())
-                .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IHandleCommandsOf<>) &&
-                            i.GetGenericArguments()[0] == cmd.GetType());
+            var interfaceType = handler.GetGenericInterface(i => i == typeof(IHandleCommandsOf<>), cmd.GetType());
             if (interfaceType != null)
             {
-                var method = interfaceType.GetMethod("Handle");
+                var method = interfaceType.GetMethod("HandleCommand");
                 method.Invoke(handler, new object[] {cmd});
             }
         }

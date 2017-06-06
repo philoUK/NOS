@@ -108,5 +108,6 @@ namespace MessagingFacts.Builders
         {
             this.eventBus.Verify(bus => bus.Publish(It.IsAny<object>(), It.IsAny<CommandWasDispatchedEvent>()), Times.Once());
         }
+
     }
 }

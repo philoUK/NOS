@@ -44,7 +44,17 @@ namespace NewOrbit.Messaging.Shared
 
         private static bool IsCandidateLibrary(RuntimeLibrary library, string assemblyName)
         {
-            return library.Dependencies.Any(d => d.Name == assemblyName);
+            return library.Dependencies.Any(
+                d => d.Name.ToLower().StartsWith(assemblyName.ToLower()));
+        }
+
+        public static TypeInfo GetGenericInterface(this object lhs, Func<Type,bool> fComparer, Type internalType)
+        {
+            return lhs.GetType()
+                .GetInterfaces()
+                .Select(i => i.GetTypeInfo())
+                .FirstOrDefault(i => i.IsGenericType && fComparer(i.GetGenericTypeDefinition()) &&
+                                     i.GetGenericArguments()[0] == internalType);
         }
     }
 }

@@ -1,6 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MessagingFacts.Messages;
+using NewOrbit.Messaging;
+using NewOrbit.Messaging.Command.Azure;
 using NewOrbit.Messaging.Event;
+using NewOrbit.Messaging.Monitoring.Events;
 using TestExtras;
 using Xunit;
 
@@ -69,6 +74,23 @@ namespace MessagingFacts
         {
             var sut = new EventRegistry();
             Assert.Throws<MultipleEventPublishersFoundException>(() => sut.GetPublisher(new BadEvent()));
+        }
+
+        [Fact]
+        public void FindsClassThatPublishesMoreThanOne()
+        {
+            var sut = new EventRegistry();
+            var events = new List<IEvent>
+            {
+                new CommandCouldNotBeReadEvent(),
+                new CommandDidNotDefineAHandlerEvent(),
+                new CommandWasDispatchedEvent()
+            };
+            foreach (var @event in events)
+            {
+                var publisher = sut.GetPublisher(@event);
+                Assert.True(publisher == typeof(ReceivingCommandBus));
+            }
         }
     }
 }

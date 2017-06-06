@@ -6,7 +6,7 @@ namespace MessagingFacts.Handlers
 {
     public class TestCommandHandler : IHandleCommandsOf<TestCommand>
     {
-        public void Handle(TestCommand command)
+        public void HandleCommand(TestCommand command)
         {
             
         }

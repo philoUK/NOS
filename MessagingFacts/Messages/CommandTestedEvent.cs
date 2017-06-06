@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using NewOrbit.Messaging;
 using NewOrbit.Messaging.Registrars;
 
@@ -16,7 +17,12 @@ namespace MessagingFacts.Messages
 
     public class CommandTestedEventSubscriber : ISubscribeToEventsOf<CommandTestedEvent>
     {
-        
+        public static bool HandledEvent = false;
+
+        public void HandleEvent(CommandTestedEvent @event)
+        {
+            HandledEvent = true;
+        }
     }
 
     public class CommandTestedEventPublisher : IPublishEventsOf<CommandTestedEvent>
