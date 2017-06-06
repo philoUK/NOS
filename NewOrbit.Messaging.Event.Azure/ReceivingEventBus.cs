@@ -6,7 +6,7 @@ using NewOrbit.Messaging.Shared;
 
 namespace NewOrbit.Messaging.Event.Azure
 {
-    public class ReceivingEventBus : IPublishEventsOf<EventDispatched>
+    public class ReceivingEventBus : IPublishEventsOf<EventDispatched>, IReceivingEventBus
     {
         private readonly IHandlerFactory handlerFactory;
         private readonly IEventBus bus;
