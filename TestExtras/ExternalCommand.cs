@@ -6,6 +6,7 @@ namespace TestExtras
 {
     public class ExternalCommand : ICommand
     {
+        public string CorrelationId { get; set; }
         public string Id => Guid.NewGuid().ToString();
     }
 
@@ -19,6 +20,7 @@ namespace TestExtras
 
     public class BadCommand : ICommand
     {
+        public string CorrelationId { get; set; }
         public string Id => Guid.NewGuid().ToString();
     }
 
@@ -40,6 +42,7 @@ namespace TestExtras
 
     public class BadEvent : IEvent
     {
+        public string CorrelationId { get; set; }
         public string Id => Guid.NewGuid().ToString();
     }
 

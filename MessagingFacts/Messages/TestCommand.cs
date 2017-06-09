@@ -10,6 +10,8 @@ namespace MessagingFacts.Messages
             this.Id = Guid.NewGuid().ToString();
         }
 
+        public string CorrelationId { get; set; }
+
         public string Id { get; set; }
     }
 }

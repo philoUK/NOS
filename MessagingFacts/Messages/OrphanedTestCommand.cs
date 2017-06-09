@@ -9,6 +9,7 @@ namespace MessagingFacts.Messages
     /// </summary>
     public class OrphanedTestCommand : ICommand
     {
+        public string CorrelationId { get; set; }
         public string Id => Guid.NewGuid().ToString();
 
     }

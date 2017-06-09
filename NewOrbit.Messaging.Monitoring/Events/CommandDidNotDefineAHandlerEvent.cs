@@ -11,6 +11,7 @@ namespace NewOrbit.Messaging.Monitoring.Events
 
         public string CommandId { get; set; }
         public string CommandType { get; set; }
+        public string CorrelationId { get; set; }
         public string Id { get; set; }
     }
 

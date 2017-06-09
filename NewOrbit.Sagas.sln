@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Event", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Event.Azure", "NewOrbit.Messaging.Event.Azure\NewOrbit.Messaging.Event.Azure.csproj", "{F58F69D4-7704-40C4-A6B6-4C25F5DFD67C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Saga", "NewOrbit.Messaging.Saga\NewOrbit.Messaging.Saga.csproj", "{F5C6005E-8D65-42E7-AE59-A665B86AC106}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{F58F69D4-7704-40C4-A6B6-4C25F5DFD67C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F58F69D4-7704-40C4-A6B6-4C25F5DFD67C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F58F69D4-7704-40C4-A6B6-4C25F5DFD67C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5C6005E-8D65-42E7-AE59-A665B86AC106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5C6005E-8D65-42E7-AE59-A665B86AC106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5C6005E-8D65-42E7-AE59-A665B86AC106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5C6005E-8D65-42E7-AE59-A665B86AC106}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,5 +87,6 @@ Global
 		{372A23A4-02FA-4507-9606-0DB49C097C9E} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
 		{C4FADF7C-76F9-4E39-9866-3AED8FD7EF0A} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
 		{F58F69D4-7704-40C4-A6B6-4C25F5DFD67C} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
+		{F5C6005E-8D65-42E7-AE59-A665B86AC106} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
 	EndGlobalSection
 EndGlobal

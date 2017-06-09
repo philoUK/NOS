@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace NewOrbit.Messaging.Shared
 {
     public interface IHandlerFactory
     {
-        object Make(Type type);
+        Task<object> Make(Type type, IMessage msg);
     }
 }

@@ -62,7 +62,7 @@ namespace NewOrbit.Messaging.Command.Azure
             try
             {
                 var handlingType = this.registry.GetHandlerFor(cmd);
-                return this.handlerFactory.Make(handlingType);
+                return this.handlerFactory.Make(handlingType, cmd);
             }
             catch (NoCommandHandlerDefinedException)
             {

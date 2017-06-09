@@ -16,6 +16,7 @@ namespace NewOrbit.Messaging.Monitoring.Events
 
         public DateTime Date { get; set; }
 
+        public string CorrelationId { get; set; }
         public string Id { get; }
     }
 }

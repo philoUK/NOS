@@ -6,6 +6,7 @@ namespace TestExtras
 {
     public class ExternalEvent : IEvent
     {
+        public string CorrelationId { get; set; }
         public string Id => Guid.NewGuid().ToString();
     }
 

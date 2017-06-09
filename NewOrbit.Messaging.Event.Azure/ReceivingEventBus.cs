@@ -20,7 +20,7 @@ namespace NewOrbit.Messaging.Event.Azure
         public async Task Dispatch(QueueWrappedEventMessage message)
         {
             IEvent @event = this.UnpackEvent(message);
-            var subscriber = this.GetSubscriber(message);
+            var subscriber = await this.GetSubscriber(message, @event).ConfigureAwait(false);
             this.Handle(@event, subscriber);
             await this.PublishSuccess(@event, subscriber).ConfigureAwait(false);
         }
@@ -39,12 +39,12 @@ namespace NewOrbit.Messaging.Event.Azure
             }
         }
 
-        private object GetSubscriber(QueueWrappedEventMessage message)
+        private async Task<object> GetSubscriber(QueueWrappedEventMessage message, IEvent @event)
         {
             var type = Type.GetType(message.SubscribingType);
             try
             {
-                return this.handlerFactory.Make(type);
+                return await this.handlerFactory.Make(type, @event).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

@@ -1,6 +1,8 @@
-﻿namespace NewOrbit.Messaging
+﻿using NewOrbit.Messaging.Shared;
+
+namespace NewOrbit.Messaging
 {
-    public interface ICommand
+    public interface ICommand : IMessage
     {
         string Id { get; }
     }
