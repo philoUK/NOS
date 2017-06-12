@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NewOrbit.Messaging.Saga
+﻿namespace NewOrbit.Messaging.Saga
 {
     public interface ISaga
     {

@@ -1,5 +1,4 @@
-﻿using System;
-using NewOrbit.Messaging.Saga;
+﻿using NewOrbit.Messaging.Saga;
 
 namespace MessagingFacts.Sagas
 {
@@ -8,24 +7,46 @@ namespace MessagingFacts.Sagas
         
     }
 
-    internal class TestSaga : ISaga
+    internal class TestSaga : Saga<TestSagaData>
     {
-        private ISagaData data;
-
         public bool InitialiseCalled { get; set; }
-        public void Initialise()
+        private ISagaData testSagaData;
+
+        protected override TestSagaData CreateData()
         {
             this.InitialiseCalled = true;
+            return new TestSagaData();
         }
 
-        public void Load(ISagaData sagaData)
+        protected override void SagaLoaded()
         {
-            this.data = sagaData;
+            this.testSagaData = this.Data;
         }
 
-        internal bool LoadCalledWith(TestSagaData sagaData)
+        public bool LoadCalledWith(TestSagaData sagaData)
         {
-            return this.data?.Equals(sagaData) ?? false;
+            return this.testSagaData?.Equals(sagaData) ?? false;
         }
     }
+
+    //internal class TestSaga : ISaga
+    //{
+    //    private ISagaData data;
+
+    //    public bool InitialiseCalled { get; set; }
+    //    public void Initialise()
+    //    {
+    //        this.InitialiseCalled = true;
+    //    }
+
+    //    public void Load(ISagaData sagaData)
+    //    {
+    //        this.data = sagaData;
+    //    }
+
+    //    internal bool LoadCalledWith(TestSagaData sagaData)
+    //    {
+    //        return this.data?.Equals(sagaData) ?? false;
+    //    }
+    //}
 }
