@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MessagingFacts.Sagas;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
 using Moq;
+using NewOrbit.Messaging;
 using NewOrbit.Messaging.Saga.Azure;
 using Xunit;
 
@@ -28,7 +26,7 @@ namespace MessagingFacts.Builders
 
         public SagaDatabaseTestBuilder GivenABrandNewSaga()
         {
-            this.saga = new TestSaga();
+            this.saga = new TestSaga(new Mock<IClientCommandBus>().Object, new Mock<IEventBus>().Object);
             return this;
         }
 

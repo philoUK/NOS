@@ -2,6 +2,7 @@
 using MessagingFacts.Handlers;
 using MessagingFacts.Sagas;
 using Moq;
+using NewOrbit.Messaging;
 using NewOrbit.Messaging.Saga;
 using NewOrbit.Messaging.Shared;
 using Xunit;
@@ -10,10 +11,10 @@ namespace MessagingFacts.Builders
 {
     internal class SagaDataStoreTestBuilder
     {
-        private Mock<ISagaDatabase> database = new Mock<ISagaDatabase>();
+        private readonly Mock<ISagaDatabase> database = new Mock<ISagaDatabase>();
         private TestSaga saga;
         private TestSagaData sagaData;
-       
+
         public SagaDataStoreTestBuilder GivenNoPreviousDataForSaga()
         {
             this.database.Setup(db => db.SagaExists(It.IsAny<string>())).Returns(Task.FromResult(false));
@@ -22,7 +23,9 @@ namespace MessagingFacts.Builders
 
         public async Task<SagaDataStoreTestBuilder> Create()
         {
-            var sut = new SagaDataStore(this.database.Object, new FakeHandlerFactory());
+            var sut = new SagaHandlerFactory(this.database.Object, new FakeHandlerFactory(),
+                new Mock<IClientCommandBus>().Object,
+                new Mock<IEventBus>().Object);
             this.saga = (TestSaga)await sut.Make(typeof(TestSaga), new CreateSagaCommand()).ConfigureAwait(false);
             return this;
         }

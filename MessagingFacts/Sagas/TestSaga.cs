@@ -1,4 +1,5 @@
 ﻿using System;
+using NewOrbit.Messaging;
 using NewOrbit.Messaging.Saga;
 
 namespace MessagingFacts.Sagas
@@ -15,6 +16,10 @@ namespace MessagingFacts.Sagas
 
     internal class TestSaga : Saga<TestSagaData>
     {
+        public TestSaga(IClientCommandBus commandBus, IEventBus eventBus) : base(commandBus, eventBus)
+        {
+        }
+
         public bool InitialiseCalled { get; set; }
         private ISagaData testSagaData;
 

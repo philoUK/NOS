@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+using NewOrbit.Messaging.Shared;
 
 namespace NewOrbit.Messaging.Saga
 {
@@ -10,9 +7,7 @@ namespace NewOrbit.Messaging.Saga
     {
         public static bool IsSaga(this Type type)
         {
-            return type.GetTypeInfo()
-                .GetInterfaces()
-                .Any(i => i == typeof(ISaga));
+            return type.IsSubClassOfGenericType(typeof(Saga<>));
         }
     }
 }

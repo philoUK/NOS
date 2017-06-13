@@ -2,6 +2,15 @@
 {
     public abstract class Saga<T> : ISaga where T: ISagaData
     {
+        private readonly IClientCommandBus commandBus;
+        private readonly IEventBus eventBus;
+
+        protected Saga(IClientCommandBus commandBus, IEventBus eventBus)
+        {
+            this.commandBus = commandBus;
+            this.eventBus = eventBus;
+        }
+
         public string SagaId => this.Data?.Id ?? "";
         public ISagaData SagaData => this.Data;
 

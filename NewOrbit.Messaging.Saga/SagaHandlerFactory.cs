@@ -4,15 +4,19 @@ using NewOrbit.Messaging.Shared;
 
 namespace NewOrbit.Messaging.Saga
 {
-    public class SagaDataStore : IHandlerFactory
+    public class SagaHandlerFactory : IHandlerFactory
     {
         private readonly ISagaDatabase database;
         private readonly IDependencyFactory factory;
+        private readonly IClientCommandBus commandBus;
+        private readonly IEventBus eventBus;
 
-        public SagaDataStore(ISagaDatabase database, IDependencyFactory factory)
+        public SagaHandlerFactory(ISagaDatabase database, IDependencyFactory factory, IClientCommandBus commandBus, IEventBus eventBus)
         {
             this.database = database;
             this.factory = factory;
+            this.commandBus = commandBus;
+            this.eventBus = eventBus;
         }
 
         public async Task<object> Make(Type type, IMessage msg)
@@ -26,7 +30,7 @@ namespace NewOrbit.Messaging.Saga
 
         private async Task<object> MakeSaga(Type type, IMessage msg)
         {
-            var saga = (ISaga) this.factory.Make(type);
+            var saga = (ISaga) Activator.CreateInstance(type, new object[] {this.commandBus, this.eventBus});
             var isInDatabase = await this.database.SagaExists(msg.CorrelationId).ConfigureAwait(false);
             if (!isInDatabase)
             {

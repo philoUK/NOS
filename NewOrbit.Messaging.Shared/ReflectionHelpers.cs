@@ -56,5 +56,21 @@ namespace NewOrbit.Messaging.Shared
                 .FirstOrDefault(i => i.IsGenericType && fComparer(i.GetGenericTypeDefinition()) &&
                                      i.GetGenericArguments()[0] == internalType);
         }
+
+        public static bool IsSubClassOfGenericType(this Type typeToCheck, Type genericType)
+        {
+            while (typeToCheck != null && typeToCheck != typeof(object))
+            {
+                var cur = typeToCheck.GetTypeInfo().IsGenericType
+                    ? typeToCheck.GetTypeInfo().GetGenericTypeDefinition()
+                    : typeToCheck;
+                if (genericType == cur)
+                {
+                    return true;
+                }
+                typeToCheck = typeToCheck.GetTypeInfo().BaseType;
+            }
+            return false;
+        }
     }
 }
