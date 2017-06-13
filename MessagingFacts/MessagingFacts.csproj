@@ -17,6 +17,7 @@
     <ProjectReference Include="..\NewOrbit.Messaging.Event.Azure\NewOrbit.Messaging.Event.Azure.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Event\NewOrbit.Messaging.Event.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Monitoring\NewOrbit.Messaging.Monitoring.csproj" />
+    <ProjectReference Include="..\NewOrbit.Messaging.Saga.Azure\NewOrbit.Messaging.Saga.Azure.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Saga\NewOrbit.Messaging.Saga.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging\NewOrbit.Messaging.csproj" />
     <ProjectReference Include="..\TestExtras\TestExtras.csproj" />

@@ -2,18 +2,19 @@
 {
     public abstract class Saga<T> : ISaga where T: ISagaData
     {
-        private T data;
+        public string SagaId => this.Data?.Id ?? "";
+        public ISagaData SagaData => this.Data;
 
         public void Initialise()
         {
-            this.data = this.CreateData();
+            this.Data = this.CreateData();
         }
 
         protected abstract T CreateData();
 
         public void Load(ISagaData sagaData)
         {
-            this.data = (T) sagaData;
+            this.Data = (T) sagaData;
             this.SagaLoaded();
         }
 
@@ -21,6 +22,6 @@
         {
         }
 
-        protected T Data => this.data;
+        protected T Data { get; private set; }
     }
 }

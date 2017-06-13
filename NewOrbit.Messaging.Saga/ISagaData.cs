@@ -2,5 +2,6 @@
 {
     public interface ISagaData
     {
+        string Id { get; }
     }
 }

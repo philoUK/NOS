@@ -13,10 +13,10 @@ namespace MessagingFacts.Builders
         private Mock<ISagaDatabase> database = new Mock<ISagaDatabase>();
         private TestSaga saga;
         private TestSagaData sagaData;
-
+       
         public SagaDataStoreTestBuilder GivenNoPreviousDataForSaga()
         {
-            this.database.Setup(db => db.SagaExists(It.IsAny<IMessage>())).Returns(Task.FromResult(false));
+            this.database.Setup(db => db.SagaExists(It.IsAny<string>())).Returns(Task.FromResult(false));
             return this;
         }
 
@@ -39,9 +39,9 @@ namespace MessagingFacts.Builders
 
         public SagaDataStoreTestBuilder GivenPreviousDataForSaga()
         {
-            this.database.Setup(db => db.SagaExists(It.IsAny<IMessage>())).Returns(Task.FromResult(true));
+            this.database.Setup(db => db.SagaExists(It.IsAny<string>())).Returns(Task.FromResult(true));
             this.sagaData = new TestSagaData();
-            this.database.Setup(db => db.LoadSagaData(It.IsAny<ISaga>()))
+            this.database.Setup(db => db.LoadSagaData(It.IsAny<string>()))
                 .Returns(Task.FromResult((ISagaData) this.sagaData));
             return this;
         }
@@ -50,5 +50,6 @@ namespace MessagingFacts.Builders
         {
             Assert.True(this.saga.LoadCalledWith(this.sagaData));
         }
+
     }
 }

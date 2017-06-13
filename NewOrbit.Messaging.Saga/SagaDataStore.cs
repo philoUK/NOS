@@ -27,7 +27,7 @@ namespace NewOrbit.Messaging.Saga
         private async Task<object> MakeSaga(Type type, IMessage msg)
         {
             var saga = (ISaga) this.factory.Make(type);
-            var isInDatabase = await this.database.SagaExists(msg).ConfigureAwait(false);
+            var isInDatabase = await this.database.SagaExists(msg.CorrelationId).ConfigureAwait(false);
             if (!isInDatabase)
             {
                 saga.Initialise();
@@ -35,7 +35,7 @@ namespace NewOrbit.Messaging.Saga
             }
             else
             {
-                var data = await this.database.LoadSagaData(saga).ConfigureAwait(false);
+                var data = await this.database.LoadSagaData(msg.CorrelationId).ConfigureAwait(false);
                 saga.Load(data);
             }
             return saga;
