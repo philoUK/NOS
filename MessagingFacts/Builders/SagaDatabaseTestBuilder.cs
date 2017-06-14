@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MessagingFacts.Sagas;
 using Moq;
 using NewOrbit.Messaging;
@@ -16,6 +17,10 @@ namespace MessagingFacts.Builders
         private bool checkExists;
         private bool ensureNotFound;
         private bool cleanupAfterwards;
+        private bool ensureSave;
+        private bool ensureFound;
+        private bool changeTheData;
+        private bool compareData;
 
         public SagaDatabaseTestBuilder()
         {
@@ -26,7 +31,8 @@ namespace MessagingFacts.Builders
 
         public SagaDatabaseTestBuilder GivenABrandNewSaga()
         {
-            this.saga = new TestSaga(new Mock<IClientCommandBus>().Object, new Mock<IEventBus>().Object);
+            this.saga = this.MakeTestSaga();
+            this.saga.Initialise(Guid.NewGuid().ToString());
             return this;
         }
 
@@ -50,13 +56,29 @@ namespace MessagingFacts.Builders
 
         public async Task Execute()
         {
+            if (this.ensureSave)
+            {
+                await this.ExecuteSave().ConfigureAwait(false);
+            }
             if (this.checkExists)
             {
                 await this.ExecuteCheckExists().ConfigureAwait(false);
             }
             if (this.ensureNotFound)
             {
-                this.EnsureNotFound();
+                this.ExecuteEnsureNotFound();
+            }
+            if (this.ensureFound)
+            {
+                this.ExecuteEnsureFound();
+            }
+            if (this.changeTheData)
+            {
+                await this.ExecuteChangeData().ConfigureAwait(false);
+            }
+            if (this.compareData)
+            {
+                await this.ExecuteCompareData().ConfigureAwait(false);
             }
             if (this.cleanupAfterwards)
             {
@@ -70,9 +92,14 @@ namespace MessagingFacts.Builders
             this.exists = await sut.SagaExists(this.saga.SagaId).ConfigureAwait(false);
         }
 
-        private void EnsureNotFound()
+        private void ExecuteEnsureNotFound()
         {
             Assert.False(this.exists);
+        }
+
+        private void ExecuteEnsureFound()
+        {
+            Assert.True(this.exists);
         }
 
         private async Task ExecuteCleanup()
@@ -80,5 +107,62 @@ namespace MessagingFacts.Builders
             var sut = new TableStorageSagaDatabase(this.config.Object);
             await sut.DeleteSagaData(this.saga.SagaId).ConfigureAwait(false);
         }
+
+        public SagaDatabaseTestBuilder WhenSaving()
+        {
+            this.ensureSave = true;
+            return this;
+        }
+
+        public SagaDatabaseTestBuilder ThenTheDataShouldBeFound()
+        {
+            this.ensureFound = true;
+            return this;
+        }
+
+        private async Task ExecuteSave()
+        {
+            var sut = new TableStorageSagaDatabase(this.config.Object);
+            await sut.Save(this.saga).ConfigureAwait(false);
+        }
+
+        public SagaDatabaseTestBuilder WhenChangingTheData()
+        {
+            this.changeTheData = true;
+            return this;
+        }
+
+        public SagaDatabaseTestBuilder ThenTheCurrentDataShouldBeDifferent()
+        {
+            this.compareData = true;
+            return this;
+        }
+
+        private async Task ExecuteChangeData()
+        {
+            var changedSaga = this.MakeTestSaga();
+            changedSaga.Load(new TestSagaData
+            {
+                Id = this.saga.SagaId,
+                SomeField = "changed"
+            });
+            var sut = new TableStorageSagaDatabase(this.config.Object);
+            await sut.Save(changedSaga).ConfigureAwait(false);
+        }
+
+        private async Task ExecuteCompareData()
+        {
+            var sut = new TableStorageSagaDatabase(this.config.Object);
+            var newSaga = this.MakeTestSaga();
+            newSaga.Load(await sut.LoadSagaData(this.saga.SagaId).ConfigureAwait(false));
+            Assert.Equal(newSaga.SagaId, this.saga.SagaId);
+            Assert.NotEqual(newSaga.SomeField, this.saga.SomeField);
+        }
+
+        private TestSaga MakeTestSaga()
+        {
+            return new TestSaga(new Mock<IClientCommandBus>().Object, new Mock<IEventBus>().Object);
+        }
+
     }
 }

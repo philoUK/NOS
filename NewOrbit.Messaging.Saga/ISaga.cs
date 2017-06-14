@@ -4,7 +4,7 @@
     {
         string SagaId { get; }
         ISagaData SagaData { get; }
-        void Initialise();
+        void Initialise(string id);
         void Load(ISagaData data);
     }
 }

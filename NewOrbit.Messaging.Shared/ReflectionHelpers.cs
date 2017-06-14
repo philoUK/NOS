@@ -48,12 +48,12 @@ namespace NewOrbit.Messaging.Shared
                 d => d.Name.ToLower().StartsWith(assemblyName.ToLower()));
         }
 
-        public static TypeInfo GetGenericInterface(this object lhs, Func<Type,bool> fComparer, Type internalType)
+        public static TypeInfo GetGenericInterface(this object lhs, Type genericType, Type internalType)
         {
             return lhs.GetType()
                 .GetInterfaces()
                 .Select(i => i.GetTypeInfo())
-                .FirstOrDefault(i => i.IsGenericType && fComparer(i.GetGenericTypeDefinition()) &&
+                .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericType &&
                                      i.GetGenericArguments()[0] == internalType);
         }
 

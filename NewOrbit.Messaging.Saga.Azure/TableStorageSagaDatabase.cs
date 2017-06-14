@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -66,7 +67,7 @@ namespace NewOrbit.Messaging.Saga.Azure
             await this.CreateTable().ConfigureAwait(false);
             if (await this.SagaExists(sagaId).ConfigureAwait(false))
             {
-                var op = TableOperation.Retrieve(sagaId, "");
+                var op = TableOperation.Retrieve<SagaDataEntity>(sagaId, "");
                 var result = await this.table.ExecuteAsync(op).ConfigureAwait(false);
                 var entity = (SagaDataEntity) result.Result;
                 var type = Type.GetType(entity.SagaDataType);

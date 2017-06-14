@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using NewOrbit.Messaging.Monitoring.Events;
 using NewOrbit.Messaging.Registrars;
@@ -12,9 +10,9 @@ namespace NewOrbit.Messaging.Command.Azure
         IPublishEventsOf<CommandDidNotDefineAHandlerEvent>,
         IPublishEventsOf<CommandWasDispatchedEvent>
     {
-        private ICommandHandlerRegistry registry;
-        private IEventBus eventBus;
-        private IHandlerFactory handlerFactory;
+        private readonly ICommandHandlerRegistry registry;
+        private readonly IEventBus eventBus;
+        private readonly IHandlerFactory handlerFactory;
 
         public ReceivingCommandBus(ICommandHandlerRegistry registry, IEventBus eventBus, IHandlerFactory handlerFactory)
         {
@@ -78,7 +76,7 @@ namespace NewOrbit.Messaging.Command.Azure
 
         private void DispatchToHandler(ICommand cmd, object handler)
         {
-            var interfaceType = handler.GetGenericInterface(i => i == typeof(IHandleCommandsOf<>), cmd.GetType());
+            var interfaceType = handler.GetGenericInterface(typeof(IHandleCommandsOf<>), cmd.GetType());
             if (interfaceType != null)
             {
                 var method = interfaceType.GetMethod("HandleCommand");

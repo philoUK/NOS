@@ -6,12 +6,8 @@ namespace MessagingFacts.Sagas
 {
     internal class TestSagaData : ISagaData
     {
-        public TestSagaData()
-        {
-            Id = Guid.NewGuid().ToString();
-        }
-
-        public string Id { get; }
+        public string Id { get; set; }
+        public string SomeField { get; set; }
     }
 
     internal class TestSaga : Saga<TestSagaData>
@@ -21,12 +17,19 @@ namespace MessagingFacts.Sagas
         }
 
         public bool InitialiseCalled { get; set; }
+
+        public string SomeField
+        {
+            get => this.Data.SomeField;
+            set => this.Data.SomeField = value;
+        }
+
         private ISagaData testSagaData;
 
-        protected override TestSagaData CreateData()
+        protected override TestSagaData CreateData(string id)
         {
             this.InitialiseCalled = true;
-            return new TestSagaData();
+            return new TestSagaData {Id = id};
         }
 
         protected override void SagaLoaded()

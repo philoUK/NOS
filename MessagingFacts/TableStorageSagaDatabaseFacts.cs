@@ -16,31 +16,29 @@ namespace MessagingFacts
                 .Cleanup();
             await builder.Execute().ConfigureAwait(false);
         }
-        //[Fact]
-        //public async Task NewIMessageShouldNotBeFound()
-        //{
-        //    var builder = new SagaDatabaseTestBuilder()
-        //        .GivenANewMessage();
-        //    Assert.True(await builder.NewMessageIsNotFound());
-        //}
 
-        //[Fact]
-        //public async Task MessageShouldBeFoundAfterSaving()
-        //{
-        //    var builder = await new SagaDatabaseTestBuilder()
-        //        .GivenAnExistingMessage();
-        //    Assert.True(await builder.MessageIsFound());
-        //    await builder.DeleteMessage();
-        //}
+        [Fact]
+        public async Task SagaFoundAfterSaved()
+        {
+            var builder = new SagaDatabaseTestBuilder()
+                .GivenABrandNewSaga()
+                .WhenSaving()
+                .WhenCheckingIfTheDataExists()
+                .ThenTheDataShouldBeFound()
+                .Cleanup();
+            await builder.Execute().ConfigureAwait(false);
+        }
 
-        //[Fact]
-        //public async Task TaskSavesAndLoadsCorrectly()
-        //{
-        //    var builder = await new SagaDatabaseTestBuilder()
-        //        .GivenASaga()
-        //        .WhenSavingTheSaga()
-        //        .ThenTheSagaCanBeCorrectlyLoaded()
-        //        .DeleteSaga();
-        //}
+        [Fact]
+        public async Task SagaCorrectlyUpdates()
+        {
+            var builder = new SagaDatabaseTestBuilder()
+                .GivenABrandNewSaga()
+                .WhenSaving()
+                .WhenChangingTheData()
+                .ThenTheCurrentDataShouldBeDifferent()
+                .Cleanup();
+            await builder.Execute().ConfigureAwait(false);
+        }
     }
 }

@@ -54,7 +54,7 @@ namespace NewOrbit.Messaging.Event.Azure
 
         private void Handle(IEvent @event, object subscriber)
         {
-            var interfaceType = subscriber.GetGenericInterface(i => i == typeof(ISubscribeToEventsOf<>), @event.GetType());
+            var interfaceType = subscriber.GetGenericInterface(typeof(ISubscribeToEventsOf<>), @event.GetType());
             if (interfaceType != null)
             {
                 var method = interfaceType.GetMethod("HandleEvent");

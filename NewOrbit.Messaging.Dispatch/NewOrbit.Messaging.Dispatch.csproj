@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NewOrbit.Messaging.Saga\NewOrbit.Messaging.Saga.csproj" />
+    <ProjectReference Include="..\NewOrbit.Messaging.Shared\NewOrbit.Messaging.Shared.csproj" />
+    <ProjectReference Include="..\NewOrbit.Messaging\NewOrbit.Messaging.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -11,15 +11,26 @@
             this.eventBus = eventBus;
         }
 
-        public string SagaId => this.Data?.Id ?? "";
-        public ISagaData SagaData => this.Data;
-
-        public void Initialise()
+        public string SagaId
         {
-            this.Data = this.CreateData();
+            get
+            {
+                if (this.Data != null)
+                {
+                    return "";
+                }
+                return this.Data.Id;
+            }
         }
 
-        protected abstract T CreateData();
+        public ISagaData SagaData => this.Data;
+
+        public void Initialise(string id)
+        {
+            this.Data = this.CreateData(id);
+        }
+
+        protected abstract T CreateData(string id);
 
         public void Load(ISagaData sagaData)
         {
