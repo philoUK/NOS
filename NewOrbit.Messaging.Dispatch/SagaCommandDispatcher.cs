@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using NewOrbit.Messaging.Saga;
-using NewOrbit.Messaging.Shared;
 
 namespace NewOrbit.Messaging.Dispatch
 {
-    internal class SagaEventDispatcher
+    internal class SagaCommandDispatcher
     {
-        private readonly IEvent @event;
-        private readonly Type subscriberType;
+        private readonly ICommand command;
+        private readonly Type handlerType;
         private readonly DelayedClientCommandBus delayedBus = new DelayedClientCommandBus();
         private readonly DelayedEventBus delayedEventBus = new DelayedEventBus();
         private readonly ISagaDatabase sagaDatabase;
@@ -16,10 +17,10 @@ namespace NewOrbit.Messaging.Dispatch
         private readonly IEventBus eventBus;
         private ISaga saga;
 
-        public SagaEventDispatcher(IEvent @event, Type subscriberType, ISagaDatabase sagaDatabase, IClientCommandBus commandBus, IEventBus eventBus)
+        public SagaCommandDispatcher(ICommand command, Type handlerType, ISagaDatabase sagaDatabase, IClientCommandBus commandBus, IEventBus eventBus)
         {
-            this.@event = @event;
-            this.subscriberType = subscriberType;
+            this.command = command;
+            this.handlerType = handlerType;
             this.sagaDatabase = sagaDatabase;
             this.commandBus = commandBus;
             this.eventBus = eventBus;
@@ -29,7 +30,7 @@ namespace NewOrbit.Messaging.Dispatch
         {
             this.CreateSaga();
             await this.CreateOrLoadSagaData().ConfigureAwait(false);
-            this.DispatchEvent();
+            this.DispatchCommand();
             await this.SaveSaga().ConfigureAwait(false);
             await this.SubmitPendingCommands().ConfigureAwait(false);
             await this.SubmitPendingEvents().ConfigureAwait(false);
@@ -37,13 +38,13 @@ namespace NewOrbit.Messaging.Dispatch
 
         private void CreateSaga()
         {
-            this.saga = (ISaga)Activator.CreateInstance(this.subscriberType,
+            this.saga = (ISaga)Activator.CreateInstance(this.handlerType,
                 delayedBus, delayedEventBus);
         }
 
         private async Task CreateOrLoadSagaData()
         {
-            var exists = await this.sagaDatabase.SagaExists(this.@event.CorrelationId)
+            var exists = await this.sagaDatabase.SagaExists(this.command.CorrelationId)
                 .ConfigureAwait(false);
             if (exists)
             {
@@ -57,20 +58,20 @@ namespace NewOrbit.Messaging.Dispatch
 
         private async Task LoadSagaData()
         {
-            var sagaData = await this.sagaDatabase.LoadSagaData(this.@event.CorrelationId)
+            var sagaData = await this.sagaDatabase.LoadSagaData(this.command.CorrelationId)
                 .ConfigureAwait(false);
             this.saga.Load(sagaData);
         }
 
         private async Task CreateSagaData()
         {
-            this.saga.Initialise(this.@event.CorrelationId);
+            this.saga.Initialise(this.command.CorrelationId);
             await this.sagaDatabase.Save(this.saga).ConfigureAwait(false);
         }
 
-        private void DispatchEvent()
+        private void DispatchCommand()
         {
-            this.saga.HandleEvent(this.@event);
+            this.saga.HandleCommand(this.command);
         }
 
         private async Task SaveSaga()

@@ -27,7 +27,7 @@ namespace NewOrbit.Messaging.Dispatch
 
         public async Task Dispatch()
         {
-            if (IsASaga(this.subscriberType))
+            if (this.subscriberType.IsASaga())
             {
                 await new SagaEventDispatcher(this.@event, this.subscriberType, 
                     this.sagaDatabase, this.commandBus, this.eventBus).Dispatch()
@@ -40,9 +40,5 @@ namespace NewOrbit.Messaging.Dispatch
             }
         }
 
-        private static bool IsASaga(Type type)
-        {
-            return type.IsSubClassOfGenericType(typeof(Saga<>));
-        }
     }
 }

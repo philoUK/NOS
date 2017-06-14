@@ -20,10 +20,7 @@ namespace NewOrbit.Messaging.Dispatch
         public void Dispatch()
         {
             var handler = this.dependencyFactory.Make(this.subscriberType);
-            var i = handler.GetGenericInterface(typeof(ISubscribeToEventsOf<>),
-                this.@event.GetType());
-            var method = i.GetMethod("HandleEvent");
-            method.Invoke(handler, new object[] {this.@event});
+            handler.HandleEvent(this.@event);
         }
     }
 }
