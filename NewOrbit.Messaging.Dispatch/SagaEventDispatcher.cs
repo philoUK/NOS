@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
 using NewOrbit.Messaging.Saga;
-using NewOrbit.Messaging.Shared;
 
 namespace NewOrbit.Messaging.Dispatch
 {
