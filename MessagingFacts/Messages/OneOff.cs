@@ -9,8 +9,8 @@ namespace MessagingFacts.Messages
         {
             this.Id = this.CorrelationId = Guid.NewGuid().ToString();
         }
-        public string CorrelationId { get; }
-        public string Id { get; }
+        public string CorrelationId { get; set; }
+        public string Id { get; set; }
     }
 
     public class OneOffEventHandler : ISubscribeToEventsOf<OneOffEvent>

@@ -16,6 +16,7 @@ namespace MessagingFacts.Builders
     {
         private IEvent @event;
         private Type subscribingType;
+        private OneOffSagaData sagaData;
         private readonly Mock<ISagaDatabase> sagaDb = new Mock<ISagaDatabase>();
         private readonly Mock<IClientCommandBus> commandBus = new Mock<IClientCommandBus>();
         private readonly Mock<IEventBus> eventBus = new Mock<IEventBus>();
@@ -63,6 +64,28 @@ namespace MessagingFacts.Builders
         public void AssertNewSagaPathWasTaken()
         {
             this.sagaDb.Verify(db => db.Save(It.IsAny<ISaga>()), Times.Exactly(2));
+            this.commandBus.Verify(bus => bus.Submit(It.IsAny<ICommand>()), Times.Once());
+            this.eventBus.Verify(bus => bus.Publish(It.IsAny<object>(), It.IsAny<IEvent>()),
+                Times.Once());
+        }
+
+        public EventDispatcherBuilder GivenOneOffEventAndExistingSagaSubscriber()
+        {
+            OneOffEventHandler.EventHandled = false;
+            this.sagaData = new OneOffSagaData {Id = Guid.NewGuid().ToString()};
+            this.@event = new OneOffEvent {CorrelationId = this.sagaData.Id};
+            this.subscribingType = typeof(OneOffSaga);
+            this.sagaDb.Setup(db => db.SagaExists(It.IsAny<string>()))
+                .Returns(Task.FromResult(true));
+            this.sagaDb.Setup(db => db.LoadSagaData(It.IsAny<string>()))
+                .Returns(Task.FromResult((ISagaData)this.sagaData));
+            return this;
+        }
+
+        public void AssertExistingSagaPathWasTaken()
+        {
+            this.sagaDb.Verify(db => db.LoadSagaData(It.IsAny<string>()), Times.Once());
+            this.sagaDb.Verify(db => db.Save(It.IsAny<ISaga>()), Times.Once());
             this.commandBus.Verify(bus => bus.Submit(It.IsAny<ICommand>()), Times.Once());
             this.eventBus.Verify(bus => bus.Publish(It.IsAny<object>(), It.IsAny<IEvent>()),
                 Times.Once());
