@@ -21,6 +21,16 @@ namespace MessagingFacts
             builder.AssertSagaPathWasNotTaken();
             builder.AssertEventHandled();
         }
+
+        [Fact]
+        public async Task NewSagaHandlerIsHandledCorrectly()
+        {
+            var builder = await new EventDispatcherBuilder()
+                .GivenOneOffEventAndNewSagaSubscriber()
+                .Execute();
+            builder.AssertNewSagaPathWasTaken();
+            builder.AssertEventHandled();
+        }
     }
 
 

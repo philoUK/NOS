@@ -43,5 +43,15 @@
         }
 
         protected T Data { get; private set; }
+
+        protected void PublishEvent(IEvent @event)
+        {
+            this.eventBus.Publish(this, @event).Wait();
+        }
+
+        protected void SubmitCommand(ICommand command)
+        {
+            this.commandBus.Submit(command).Wait();
+        }
     }
 }

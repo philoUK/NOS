@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MessagingFacts.Handlers;
 using MessagingFacts.Messages;
+using MessagingFacts.Sagas;
 using Moq;
 using NewOrbit.Messaging;
 using NewOrbit.Messaging.Dispatch;
@@ -47,6 +48,24 @@ namespace MessagingFacts.Builders
         public void AssertEventHandled()
         {
             Assert.True(OneOffEventHandler.EventHandled);
+        }
+
+        public EventDispatcherBuilder GivenOneOffEventAndNewSagaSubscriber()
+        {
+            OneOffEventHandler.EventHandled = false;
+            this.@event = new OneOffEvent();
+            this.subscribingType = typeof(OneOffSaga);
+            this.sagaDb.Setup(db => db.SagaExists(It.IsAny<string>()))
+                .Returns(Task.FromResult(false));
+            return this;
+        }
+
+        public void AssertNewSagaPathWasTaken()
+        {
+            this.sagaDb.Verify(db => db.Save(It.IsAny<ISaga>()), Times.Exactly(2));
+            this.commandBus.Verify(bus => bus.Submit(It.IsAny<ICommand>()), Times.Once());
+            this.eventBus.Verify(bus => bus.Publish(It.IsAny<object>(), It.IsAny<IEvent>()),
+                Times.Once());
         }
     }
 }
