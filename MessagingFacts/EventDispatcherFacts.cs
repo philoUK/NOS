@@ -1,11 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MessagingFacts.Builders;
-using MessagingFacts.Handlers;
-using Moq;
-using NewOrbit.Messaging;
-using NewOrbit.Messaging.Dispatch;
-using NewOrbit.Messaging.Saga;
 using Xunit;
 
 namespace MessagingFacts

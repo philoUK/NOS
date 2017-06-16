@@ -22,4 +22,24 @@ namespace MessagingFacts.Messages
             EventHandled = true;
         }
     }
+
+    public class OneOffCommand : ICommand
+    {
+        public OneOffCommand()
+        {
+            this.Id = this.CorrelationId = Guid.NewGuid().ToString();
+        }
+        public string CorrelationId { get; set; }
+        public string Id { get; set;  }
+    }
+
+    public class OneOffCommandHandler : IHandleCommandsOf<OneOffCommand>
+    {
+        public static bool CommandHandled;
+
+        public void HandleCommand(OneOffCommand command)
+        {
+            CommandHandled = true;
+        }
+    }
 }

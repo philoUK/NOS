@@ -23,7 +23,7 @@ namespace MessagingFacts.Sagas
     }
 
     public class OneOffSaga : Saga<OneOffSagaData>, ISubscribeToEventsOf<OneOffEvent>,
-        IPublishEventsOf<OneOffSagaEvent>
+        IPublishEventsOf<OneOffSagaEvent>, IHandleCommandsOf<OneOffCommand>
     {
         public OneOffSaga(IClientCommandBus commandBus, IEventBus eventBus) : base(commandBus, eventBus)
         {
@@ -41,6 +41,15 @@ namespace MessagingFacts.Sagas
         public void HandleEvent(OneOffEvent @event)
         {
             OneOffEventHandler.EventHandled = true;
+            // submit a command
+            // submit an event
+            base.PublishEvent(new OneOffSagaEvent());
+            base.SubmitCommand(new OneOffSagaCommand());
+        }
+
+        public void HandleCommand(OneOffCommand command)
+        {
+            OneOffCommandHandler.CommandHandled = true;
             // submit a command
             // submit an event
             base.PublishEvent(new OneOffSagaEvent());
