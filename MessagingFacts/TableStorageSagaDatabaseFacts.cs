@@ -40,5 +40,16 @@ namespace MessagingFacts
                 .Cleanup();
             await builder.Execute().ConfigureAwait(false);
         }
+
+        [Fact]
+        public async Task MissingSagaReturnsNull()
+        {
+            var builder = new SagaDatabaseTestBuilder()
+                .GivenAnUnknownSagaId()
+                .WhenFetchingSagaData()
+                .ThenTheDataIsNull()
+                .Cleanup();
+            await builder.Execute().ConfigureAwait(false);
+        }
     }
 }

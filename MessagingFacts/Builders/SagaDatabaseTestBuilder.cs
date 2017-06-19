@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MessagingFacts.Sagas;
 using Moq;
 using NewOrbit.Messaging;
+using NewOrbit.Messaging.Saga;
 using NewOrbit.Messaging.Saga.Azure;
 using Xunit;
 
@@ -21,6 +22,10 @@ namespace MessagingFacts.Builders
         private bool ensureFound;
         private bool changeTheData;
         private bool compareData;
+        private string sagaId;
+        private bool fetchSagaData;
+        private bool checkForNullSaga;
+        private ISagaData sagaData;
 
         public SagaDatabaseTestBuilder()
         {
@@ -64,6 +69,10 @@ namespace MessagingFacts.Builders
             {
                 await this.ExecuteCheckExists().ConfigureAwait(false);
             }
+            if (this.fetchSagaData)
+            {
+                await this.ExecuteFetchSagaData().ConfigureAwait(false);
+            }
             if (this.ensureNotFound)
             {
                 this.ExecuteEnsureNotFound();
@@ -71,6 +80,10 @@ namespace MessagingFacts.Builders
             if (this.ensureFound)
             {
                 this.ExecuteEnsureFound();
+            }
+            if (this.checkForNullSaga)
+            {
+                this.ExecuteCheckForNullSaga();
             }
             if (this.changeTheData)
             {
@@ -104,6 +117,10 @@ namespace MessagingFacts.Builders
 
         private async Task ExecuteCleanup()
         {
+            if (this.saga == null)
+            {
+                return;
+            }
             var sut = new TableStorageSagaDatabase(this.config.Object);
             await sut.DeleteSagaData(this.saga.SagaId).ConfigureAwait(false);
         }
@@ -164,5 +181,33 @@ namespace MessagingFacts.Builders
             return new TestSaga(new Mock<IClientCommandBus>().Object, new Mock<IEventBus>().Object);
         }
 
+        public SagaDatabaseTestBuilder GivenAnUnknownSagaId()
+        {
+            this.sagaId = Guid.NewGuid().ToString();
+            return this;
+        }
+
+        public SagaDatabaseTestBuilder WhenFetchingSagaData()
+        {
+            this.fetchSagaData = true;
+            return this;
+        }
+
+        public SagaDatabaseTestBuilder ThenTheDataIsNull()
+        {
+            this.checkForNullSaga = true;
+            return this;
+        }
+
+        private async Task ExecuteFetchSagaData()
+        {
+            var sut = new TableStorageSagaDatabase(this.config.Object);
+            this.sagaData = await sut.LoadSagaData(this.sagaId).ConfigureAwait(false);
+        }
+
+        private void ExecuteCheckForNullSaga()
+        {
+            Assert.Null(this.sagaData);
+        }
     }
 }
