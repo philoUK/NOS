@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using NewOrbit.Messaging.Saga;
 using NewOrbit.Messaging.Shared;
 
@@ -13,18 +14,32 @@ namespace NewOrbit.Messaging.Dispatch
 
         public static void HandleEvent(this object o, IEvent @event)
         {
-            var i = o.GetGenericInterface(typeof(ISubscribeToEventsOf<>),
-                @event.GetType());
-            var method = i.GetMethod("HandleEvent");
-            method.Invoke(o, new object[] { @event });
+            try
+            {
+                var i = o.GetGenericInterface(typeof(ISubscribeToEventsOf<>),
+                    @event.GetType());
+                var method = i.GetMethod("HandleEvent");
+                method.Invoke(o, new object[] {@event});
+            }
+            catch (TargetInvocationException tex)
+            {
+                throw tex.InnerException;
+            }
         }
 
         public static void HandleCommand(this object o, ICommand cmd)
         {
-            var i = o.GetGenericInterface(typeof(IHandleCommandsOf<>),
-                cmd.GetType());
-            var method = i.GetMethod("HandleCommand");
-            method.Invoke(o, new object[] {cmd});
+            try
+            {
+                var i = o.GetGenericInterface(typeof(IHandleCommandsOf<>),
+                    cmd.GetType());
+                var method = i.GetMethod("HandleCommand");
+                method.Invoke(o, new object[] {cmd});
+            }
+            catch (TargetInvocationException tex)
+            {
+                throw tex.InnerException;
+            }
         }
     }
 }
