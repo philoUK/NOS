@@ -1,4 +1,7 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace NewOrbit.Messaging.Timeouts.Azure
@@ -49,6 +52,36 @@ namespace NewOrbit.Messaging.Timeouts.Azure
                 var deleteOp = TableOperation.Delete(entity);
                 this.table.ExecuteAsync(deleteOp).Wait();
             }
+        }
+
+        public IEnumerable<TimeoutData> GetExpiredTimeoutsSince(DateTime dtm)
+        {
+            var results = new List<TimeoutEntity>();
+            TableQuery<TimeoutEntity> query = new TableQuery<TimeoutEntity>()
+                .Where(TableQuery.GenerateFilterConditionForDate("Timeout", QueryComparisons.LessThan,
+                    DateTimeOffset.UtcNow));
+            TableContinuationToken continuationToken = null;
+            do
+            {
+                var items = table.ExecuteQuerySegmentedAsync(query, continuationToken).Result;
+                foreach (var item in items)
+                {
+                    results.Add(item);
+                }
+                continuationToken = items.ContinuationToken;
+            } while (continuationToken != null);
+            return results.Select(ToData);
+        }
+
+        private TimeoutData ToData(TimeoutEntity arg)
+        {
+            return new TimeoutData
+            {
+                TargetId = arg.PartitionKey,
+                TargetMethod = arg.OwnerMethod,
+                TargetType = arg.OwnerType,
+                Timeout = arg.Timeout
+            };
         }
     }
 }

@@ -68,7 +68,8 @@ namespace NewOrbit.Messaging.Saga
                     CorrelationId = this.SagaId,
                     Id = Guid.NewGuid().ToString(),
                     MethodName = methodName,
-                    Timeout = DateTime.UtcNow.Add(timeToResponsd)
+                    Timeout = DateTime.UtcNow.Add(timeToResponsd),
+                    OwnerType = this.GetType().AssemblyQualifiedName
                 };
                 this.commandBus.Submit(msg).Wait();
             }

@@ -24,5 +24,14 @@ namespace MessagingFacts
                 .Delete();
             builder.VerifyMessageNotFound();
         }
+
+        [Fact]
+        public void TimeoutRequestsRetrievedProperly()
+        {
+            var builder = new TimeoutDatabaseTestBuilder()
+                .GivenATimeoutRequest()
+                .Save();
+            builder.VerifyMessageRetrievedProperly();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Moq;
@@ -27,7 +28,7 @@ namespace MessagingFacts.Builders
                 TargetId = Guid.NewGuid().ToString(),
                 TargetMethod = "MethodName",
                 TargetType = "SomeTypeInfo",
-                Timeout = DateTime.UtcNow.AddMinutes(3)
+                Timeout = DateTime.UtcNow.AddMinutes(-3)
             };
             return this;
         }
@@ -80,6 +81,16 @@ namespace MessagingFacts.Builders
             var op = TableOperation.Retrieve(this.timeoutData.TargetId, this.timeoutData.TargetMethod);
             var result = cloudTable.ExecuteAsync(op).Result;
             Assert.Null(result.Result);
+            cloudTable.DeleteAsync().Wait();
+        }
+
+        public void VerifyMessageRetrievedProperly()
+        {
+            var items = this.database.GetExpiredTimeoutsSince(DateTime.UtcNow);
+            Assert.True(items.Any());
+            var cloudConfig = CloudStorageAccount.Parse("UseDevelopmentStorage=true");
+            var cloudTableClient = cloudConfig.CreateCloudTableClient();
+            var cloudTable = cloudTableClient.GetTableReference("testtimeoutdatabase");
             cloudTable.DeleteAsync().Wait();
         }
     }
