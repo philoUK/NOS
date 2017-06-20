@@ -1,6 +1,5 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
-using System;
 
 namespace NewOrbit.Messaging.Timeouts.Azure
 {
@@ -38,6 +37,18 @@ namespace NewOrbit.Messaging.Timeouts.Azure
             };
             var insertOp = TableOperation.Insert(this.entity);
             this.table.ExecuteAsync(insertOp).Wait();
+        }
+
+        public void Delete(string targetId, string targetMethod)
+        {
+            var fetchOp = TableOperation.Retrieve<TimeoutEntity>(targetId, targetMethod);
+            var results = this.table.ExecuteAsync(fetchOp).Result;
+            if (results.Result != null)
+            {
+                var entity = results.Result as TimeoutEntity;
+                var deleteOp = TableOperation.Delete(entity);
+                this.table.ExecuteAsync(deleteOp).Wait();
+            }
         }
     }
 }

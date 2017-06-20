@@ -63,6 +63,24 @@ namespace MessagingFacts.Builders
         }
 
 
-       
+        public TimeoutDatabaseTestBuilder Delete()
+        {
+            this.database.Delete(this.timeoutData.TargetId, this.timeoutData.TargetMethod);
+            return this;
+        }
+
+        public void VerifyMessageNotFound()
+        {
+            var cloudConfig = CloudStorageAccount.Parse("UseDevelopmentStorage=true");
+            var cloudTableClient = cloudConfig.CreateCloudTableClient();
+            var cloudTable = cloudTableClient.GetTableReference("testtimeoutdatabase");
+            var exists = cloudTable.ExistsAsync().Result;
+            Assert.True(exists);
+            // check we can get a message of id x | y
+            var op = TableOperation.Retrieve(this.timeoutData.TargetId, this.timeoutData.TargetMethod);
+            var result = cloudTable.ExecuteAsync(op).Result;
+            Assert.Null(result.Result);
+            cloudTable.DeleteAsync().Wait();
+        }
     }
 }
