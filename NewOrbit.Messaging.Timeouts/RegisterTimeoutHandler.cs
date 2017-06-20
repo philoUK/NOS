@@ -17,7 +17,8 @@ namespace NewOrbit.Messaging.Timeouts
             {
                 TargetId = command.CorrelationId,
                 TargetMethod = command.MethodName,
-                Timeout = command.Timeout
+                Timeout = command.Timeout,
+                TargetType = command.OwnerType
             };
             this.timeoutDatabase.Save(data);
         }

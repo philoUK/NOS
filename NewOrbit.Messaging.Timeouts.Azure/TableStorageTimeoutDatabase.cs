@@ -1,0 +1,43 @@
+﻿using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
+using System;
+
+namespace NewOrbit.Messaging.Timeouts.Azure
+{
+    public class TableStorageTimeoutDatabase : ITimeoutDatabase
+    {
+        private ITimeoutDatabaseConfig config;
+        private CloudTable table;
+        private TimeoutEntity entity;
+
+        public TableStorageTimeoutDatabase(ITimeoutDatabaseConfig config)
+        {
+            this.config = config;
+            this.CreateTable();
+        }
+
+        public TimeoutEntity StoredData => this.entity;
+
+        private void CreateTable()
+        {
+            var storageAccount = CloudStorageAccount.Parse(this.config.ConnectionString);
+            var client = storageAccount.CreateCloudTableClient();
+            this.table = client.GetTableReference(this.config.TableName);
+            this.table.CreateIfNotExistsAsync().Wait();
+        }
+
+        public void Save(TimeoutData timeoutData)
+        {
+            this.entity = new TimeoutEntity
+            {
+                PartitionKey = timeoutData.TargetId,
+                RowKey = timeoutData.TargetMethod,
+                OwnerMethod = timeoutData.TargetMethod,
+                Timeout = timeoutData.Timeout,
+                OwnerType = timeoutData.TargetType
+            };
+            var insertOp = TableOperation.Insert(this.entity);
+            this.table.ExecuteAsync(insertOp).Wait();
+        }
+    }
+}

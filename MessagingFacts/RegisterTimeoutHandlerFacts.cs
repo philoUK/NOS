@@ -19,7 +19,8 @@ namespace MessagingFacts
                 CorrelationId = "correlationId",
                 Id = "id",
                 MethodName = "MethodName",
-                Timeout = DateTime.UtcNow
+                Timeout = DateTime.UtcNow,
+                OwnerType = "OwnerType"
             };
             sut.HandleCommand(msg);
             this.database.Verify(db => db.Save(It.Is<TimeoutData>(data => this.CheckData(msg,data))), Times.Once());
@@ -28,7 +29,7 @@ namespace MessagingFacts
         private bool CheckData(RegisterTimeoutCommand cmd, TimeoutData timeoutData)
         {
             return timeoutData.TargetId == cmd.CorrelationId && timeoutData.TargetMethod == cmd.MethodName &&
-                   timeoutData.Timeout == cmd.Timeout;
+                   timeoutData.Timeout == cmd.Timeout && timeoutData.TargetType  == cmd.OwnerType;
         }
     }
 }

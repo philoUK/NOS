@@ -20,6 +20,7 @@
     <ProjectReference Include="..\NewOrbit.Messaging.Monitoring\NewOrbit.Messaging.Monitoring.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Saga.Azure\NewOrbit.Messaging.Saga.Azure.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Saga\NewOrbit.Messaging.Saga.csproj" />
+    <ProjectReference Include="..\NewOrbit.Messaging.Timeouts.Azure\NewOrbit.Messaging.Timeouts.Azure.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Timeouts\NewOrbit.Messaging.Timeouts.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging\NewOrbit.Messaging.csproj" />
     <ProjectReference Include="..\TestExtras\TestExtras.csproj" />

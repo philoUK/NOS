@@ -7,5 +7,6 @@ namespace NewOrbit.Messaging.Timeouts
         public string TargetId { get; set; }
         public string TargetMethod { get; set; }
         public DateTime Timeout { get; set; }
+        public string TargetType { get; set; }
     }
 }
