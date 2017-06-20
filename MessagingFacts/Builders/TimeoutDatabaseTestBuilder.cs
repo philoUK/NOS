@@ -87,7 +87,7 @@ namespace MessagingFacts.Builders
         public void VerifyMessageRetrievedProperly()
         {
             var items = this.database.GetExpiredTimeoutsSince(DateTime.UtcNow);
-            Assert.True(items.Any());
+            Assert.True(items.Any(td => td.TargetId == this.timeoutData.TargetId));
             var cloudConfig = CloudStorageAccount.Parse("UseDevelopmentStorage=true");
             var cloudTableClient = cloudConfig.CreateCloudTableClient();
             var cloudTable = cloudTableClient.GetTableReference("testtimeoutdatabase");
