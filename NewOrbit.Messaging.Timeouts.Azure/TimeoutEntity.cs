@@ -5,6 +5,7 @@ namespace NewOrbit.Messaging.Timeouts.Azure
 {
     public class TimeoutEntity : TableEntity 
     {
+        public string Id { get; set; }
         public string OwnerMethod { get; set; }
         public DateTime Timeout { get; set; }
         public string OwnerType { get; set; }

@@ -53,15 +53,29 @@ namespace NewOrbit.Messaging.Dispatch
 
         private async Task DispatchToSaga(TimeoutData timeoutData, CancellationToken token)
         {
-            var sagaData = await sagaDatabase.LoadSagaData(timeoutData.TargetId).ConfigureAwait(false);
-            var cmdBus = new DelayedClientCommandBus();
             var evtBus = new DelayedEventBus();
-            var saga = (ISaga)Activator.CreateInstance(Type.GetType(timeoutData.TargetType), cmdBus, evtBus);
-            saga.Load(sagaData);
-            var method = saga.GetType().GetMethod(timeoutData.TargetMethod,
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            method.Invoke(saga, new object[] { });
+            var cmdBus = new DelayedClientCommandBus();
+            var saga = await this.LoadSaga(timeoutData, cmdBus, evtBus).ConfigureAwait(false);
+            saga.HandleTimeout(timeoutData.TargetMethod);
             await sagaDatabase.Save(saga).ConfigureAwait(false);
+            await ForwardSagaMessages(cmdBus, evtBus, saga).ConfigureAwait(false);
+        }
+
+        private async Task<ISaga> LoadSaga(TimeoutData timeoutData, DelayedClientCommandBus cmdBus, DelayedEventBus evtBus)
+        {
+            var sagaData = await sagaDatabase.LoadSagaData(timeoutData.TargetId).ConfigureAwait(false);
+            var saga = (ISaga) Activator.CreateInstance(Type.GetType(timeoutData.TargetType), cmdBus, evtBus);
+            saga.Load(sagaData);
+            return saga;
+        }
+
+        private void DeleteTimeout(TimeoutData data)
+        {
+            database.Delete(data.TargetId, data.TargetMethod);
+        }
+
+        private async Task ForwardSagaMessages(DelayedClientCommandBus cmdBus, DelayedEventBus evtBus, ISaga saga)
+        {
             foreach (var cmd in cmdBus.DelayedCommands)
             {
                 await this.externalCommandBus.Submit(cmd).ConfigureAwait(false);
@@ -70,11 +84,6 @@ namespace NewOrbit.Messaging.Dispatch
             {
                 await this.externalEventBus.Publish(saga, @event).ConfigureAwait(false);
             }
-        }
-
-        private void DeleteTimeout(TimeoutData data)
-        {
-            database.Delete(data.TargetId, data.TargetMethod);
         }
     }
 }

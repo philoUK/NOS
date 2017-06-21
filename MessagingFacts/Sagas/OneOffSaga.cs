@@ -55,5 +55,11 @@ namespace MessagingFacts.Sagas
             base.PublishEvent(new OneOffSagaEvent());
             base.SubmitCommand(new OneOffSagaCommand());
         }
+
+        private void OnTimeout()
+        {
+            base.PublishEvent(new OneOffSagaEvent());
+            base.SubmitCommand(new OneOffSagaCommand());
+        }
     }
 }

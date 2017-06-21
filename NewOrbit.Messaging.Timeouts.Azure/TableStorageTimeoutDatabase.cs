@@ -32,6 +32,7 @@ namespace NewOrbit.Messaging.Timeouts.Azure
         {
             this.entity = new TimeoutEntity
             {
+                Id = Guid.NewGuid().ToString(),
                 PartitionKey = timeoutData.TargetId,
                 RowKey = timeoutData.TargetMethod,
                 OwnerMethod = timeoutData.TargetMethod,

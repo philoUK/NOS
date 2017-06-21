@@ -41,5 +41,19 @@ namespace NewOrbit.Messaging.Dispatch
                 throw tex.InnerException;
             }
         }
+
+        public static void HandleTimeout(this object o, string methodName)
+        {
+            try
+            {
+                var method = o.GetType().GetMethod(methodName,
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                method.Invoke(o, new object[] { });
+            }
+            catch (TargetInvocationException tex)
+            {
+                throw tex.InnerException;
+            }
+        }
     }
 }
