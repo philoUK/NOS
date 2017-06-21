@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NewOrbit.Messaging.Monitoring\NewOrbit.Messaging.Monitoring.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Saga\NewOrbit.Messaging.Saga.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Shared\NewOrbit.Messaging.Shared.csproj" />
     <ProjectReference Include="..\NewOrbit.Messaging.Timeouts\NewOrbit.Messaging.Timeouts.csproj" />
