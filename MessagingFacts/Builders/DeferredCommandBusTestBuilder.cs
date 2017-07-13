@@ -55,10 +55,14 @@ namespace MessagingFacts.Builders
 
         public async Task<DeferredCommandBusTestBuilder> Submit()
         {
-            var registry = new Mock<ICommandHandlerRegistry>();
-            registry.Setup(r => r.GetHandlerFor(It.IsAny<ICommand>()))
-                .Returns(this.GetHandler());
-            await this.Defer(registry).ConfigureAwait(false);
+            var bus = new DeferredClientCommandBus(mechanism.Object, eventBus.Object);
+            try
+            {
+                await bus.Submit(this.command).ConfigureAwait(false);
+            }
+            catch (NoCommandHandlerDefinedException)
+            {
+            }
             return this;
         }
 
@@ -75,29 +79,6 @@ namespace MessagingFacts.Builders
             }
             return this;
         }
-
-        private Type GetHandler()
-        {
-            var key = this.command?.GetType() ?? typeof(object);
-            if (this.handlers.ContainsKey(key))
-            {
-                return this.handlers[key];
-            }
-            return null;
-        }
-
-        private async Task Defer(Mock<ICommandHandlerRegistry> registry)
-        {
-            var bus = new DeferredClientCommandBus(mechanism.Object, registry.Object, eventBus.Object);
-            try
-            {
-                await bus.Submit(this.command).ConfigureAwait(false);
-            }
-            catch (NoCommandHandlerDefinedException)
-            {
-            }
-        }
-
     }
 
 }

@@ -8,16 +8,6 @@ namespace MessagingFacts
 {
     public class DeferredCommandBusFacts
     {
-        [Fact]
-        public async Task NoRegisteredHandlerThrowsAnException()
-        {
-            var m = await new DeferredCommandBusTestBuilder()
-                .WithNoHandlersForCommand<TestCommand>()
-                .WithCommand(new TestCommand())
-                .Submit();
-            m.CheckCommandWasNotSubmitted();
-        }
-
         private Task<DeferredCommandBusTestBuilder> CreateBuilder()
         {
             return new DeferredCommandBusTestBuilder()

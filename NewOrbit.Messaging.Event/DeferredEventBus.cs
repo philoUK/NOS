@@ -6,7 +6,7 @@ using NewOrbit.Messaging.Shared;
 
 namespace NewOrbit.Messaging.Event
 {
-    public class DeferredEventBus
+    public class DeferredEventBus : IEventBus
     {
         private IEventPublisherRegistry publisherRegistry;
         private readonly ILogEventBusMessages logger;
@@ -70,6 +70,11 @@ namespace NewOrbit.Messaging.Event
             {
                 await this.mechanism.Defer(@event, subscriber).ConfigureAwait(false);
             }
+        }
+
+        public Task Publish(object publisher, IEvent @event)
+        {
+            return Submit(publisher, @event);
         }
     }
 }

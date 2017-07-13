@@ -8,20 +8,17 @@ namespace NewOrbit.Messaging.Command
     public class DeferredClientCommandBus : IClientCommandBus, IPublishEventsOf<CommandWasQueuedEvent>
     {
         private readonly IDeferredCommandMechanism mechanism;
-        private readonly ICommandHandlerRegistry registry;
         private readonly IEventBus eventBus;
 
-        public DeferredClientCommandBus(IDeferredCommandMechanism mechanism, ICommandHandlerRegistry registry, IEventBus eventBus)
+        public DeferredClientCommandBus(IDeferredCommandMechanism mechanism, IEventBus eventBus)
         {
             this.mechanism = mechanism;
-            this.registry = registry;
             this.eventBus = eventBus;
         }
 
         public async Task Submit(ICommand command)
         {
             this.EnsureCommandHasAValidId(command);
-            this.EnsureThereIsASingleHandlerAvailable(command);
             await this.SubmitCommand(command).ConfigureAwait(false);
             await this.NotifyCommandWasSubmitted(command).ConfigureAwait(false);
         }
@@ -31,15 +28,6 @@ namespace NewOrbit.Messaging.Command
             if (string.IsNullOrWhiteSpace(command.Id))
             {
                 throw new ArgumentException("Command Id must be set");
-            }
-        }
-
-        private void EnsureThereIsASingleHandlerAvailable(ICommand command)
-        {
-            var hasHandler = this.registry.GetHandlerFor(command);
-            if (hasHandler == null)
-            {
-                throw new NoCommandHandlerDefinedException(command);
             }
         }
 

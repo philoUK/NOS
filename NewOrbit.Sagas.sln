@@ -1,39 +1,43 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F4E3B872-7B9C-40D3-9C4C-B7F4EBA1E33C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingFacts", "MessagingFacts\MessagingFacts.csproj", "{1533461D-B37E-4A49-A4A2-A4C3F95F371E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagingFacts", "MessagingFacts\MessagingFacts.csproj", "{1533461D-B37E-4A49-A4A2-A4C3F95F371E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging", "NewOrbit.Messaging\NewOrbit.Messaging.csproj", "{32C9AA0C-862C-4D8E-8E65-CB4618009FB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewOrbit.Messaging", "NewOrbit.Messaging\NewOrbit.Messaging.csproj", "{32C9AA0C-862C-4D8E-8E65-CB4618009FB9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{B1AD506B-ED40-4B31-A780-9B00994AF6BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Command", "NewOrbit.Messaging.Command\NewOrbit.Messaging.Command.csproj", "{A90C2D15-C19D-42C0-984F-78EA2D66E887}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewOrbit.Messaging.Command", "NewOrbit.Messaging.Command\NewOrbit.Messaging.Command.csproj", "{A90C2D15-C19D-42C0-984F-78EA2D66E887}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestExtras", "TestExtras\TestExtras.csproj", "{F8DA5D3B-123C-485C-8BCE-214DE4935F25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestExtras", "TestExtras\TestExtras.csproj", "{F8DA5D3B-123C-485C-8BCE-214DE4935F25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Command.Azure", "NewOrbit.Messaging.Command.Azure\NewOrbit.Messaging.Command.Azure.csproj", "{BEC08035-8E5C-4FEA-A8A1-6C68CE2ADAEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewOrbit.Messaging.Command.Azure", "NewOrbit.Messaging.Command.Azure\NewOrbit.Messaging.Command.Azure.csproj", "{BEC08035-8E5C-4FEA-A8A1-6C68CE2ADAEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Shared", "NewOrbit.Messaging.Shared\NewOrbit.Messaging.Shared.csproj", "{6AF8CC1B-73BB-4B49-8B93-002CCEE7569B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewOrbit.Messaging.Shared", "NewOrbit.Messaging.Shared\NewOrbit.Messaging.Shared.csproj", "{6AF8CC1B-73BB-4B49-8B93-002CCEE7569B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Monitoring", "NewOrbit.Messaging.Monitoring\NewOrbit.Messaging.Monitoring.csproj", "{372A23A4-02FA-4507-9606-0DB49C097C9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewOrbit.Messaging.Monitoring", "NewOrbit.Messaging.Monitoring\NewOrbit.Messaging.Monitoring.csproj", "{372A23A4-02FA-4507-9606-0DB49C097C9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Event", "NewOrbit.Messaging.Event\NewOrbit.Messaging.Event.csproj", "{C4FADF7C-76F9-4E39-9866-3AED8FD7EF0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewOrbit.Messaging.Event", "NewOrbit.Messaging.Event\NewOrbit.Messaging.Event.csproj", "{C4FADF7C-76F9-4E39-9866-3AED8FD7EF0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Event.Azure", "NewOrbit.Messaging.Event.Azure\NewOrbit.Messaging.Event.Azure.csproj", "{F58F69D4-7704-40C4-A6B6-4C25F5DFD67C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewOrbit.Messaging.Event.Azure", "NewOrbit.Messaging.Event.Azure\NewOrbit.Messaging.Event.Azure.csproj", "{F58F69D4-7704-40C4-A6B6-4C25F5DFD67C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Saga", "NewOrbit.Messaging.Saga\NewOrbit.Messaging.Saga.csproj", "{F5C6005E-8D65-42E7-AE59-A665B86AC106}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewOrbit.Messaging.Saga", "NewOrbit.Messaging.Saga\NewOrbit.Messaging.Saga.csproj", "{F5C6005E-8D65-42E7-AE59-A665B86AC106}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Saga.Azure", "NewOrbit.Messaging.Saga.Azure\NewOrbit.Messaging.Saga.Azure.csproj", "{24B5FB3F-4AE1-4174-A122-039F6CDA562C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewOrbit.Messaging.Saga.Azure", "NewOrbit.Messaging.Saga.Azure\NewOrbit.Messaging.Saga.Azure.csproj", "{24B5FB3F-4AE1-4174-A122-039F6CDA562C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Dispatch", "NewOrbit.Messaging.Dispatch\NewOrbit.Messaging.Dispatch.csproj", "{F81B681B-F54C-49A4-9C39-2B1DE64C9716}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewOrbit.Messaging.Dispatch", "NewOrbit.Messaging.Dispatch\NewOrbit.Messaging.Dispatch.csproj", "{F81B681B-F54C-49A4-9C39-2B1DE64C9716}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Timeouts", "NewOrbit.Messaging.Timeouts\NewOrbit.Messaging.Timeouts.csproj", "{60E7F2D9-64A0-49EE-A389-71D98BD3FF92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewOrbit.Messaging.Timeouts", "NewOrbit.Messaging.Timeouts\NewOrbit.Messaging.Timeouts.csproj", "{60E7F2D9-64A0-49EE-A389-71D98BD3FF92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewOrbit.Messaging.Timeouts.Azure", "NewOrbit.Messaging.Timeouts.Azure\NewOrbit.Messaging.Timeouts.Azure.csproj", "{E235BBF7-923A-4E50-9E14-0F347A308027}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewOrbit.Messaging.Timeouts.Azure", "NewOrbit.Messaging.Timeouts.Azure\NewOrbit.Messaging.Timeouts.Azure.csproj", "{E235BBF7-923A-4E50-9E14-0F347A308027}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{2617F2B4-EDAD-41E4-9935-2728D4B5044B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleDomain.Messages", "SampleDomain.Messages\SampleDomain.Messages.csproj", "{5FA2F086-2A64-4F4D-821D-182B513027DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +101,14 @@ Global
 		{E235BBF7-923A-4E50-9E14-0F347A308027}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E235BBF7-923A-4E50-9E14-0F347A308027}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E235BBF7-923A-4E50-9E14-0F347A308027}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2617F2B4-EDAD-41E4-9935-2728D4B5044B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2617F2B4-EDAD-41E4-9935-2728D4B5044B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2617F2B4-EDAD-41E4-9935-2728D4B5044B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2617F2B4-EDAD-41E4-9935-2728D4B5044B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FA2F086-2A64-4F4D-821D-182B513027DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FA2F086-2A64-4F4D-821D-182B513027DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FA2F086-2A64-4F4D-821D-182B513027DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FA2F086-2A64-4F4D-821D-182B513027DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,5 +128,7 @@ Global
 		{F81B681B-F54C-49A4-9C39-2B1DE64C9716} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
 		{60E7F2D9-64A0-49EE-A389-71D98BD3FF92} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
 		{E235BBF7-923A-4E50-9E14-0F347A308027} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
+		{2617F2B4-EDAD-41E4-9935-2728D4B5044B} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
+		{5FA2F086-2A64-4F4D-821D-182B513027DD} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
 	EndGlobalSection
 EndGlobal
