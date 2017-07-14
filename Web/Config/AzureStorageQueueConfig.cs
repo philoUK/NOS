@@ -8,6 +8,7 @@ namespace Web.Config
     {
         private readonly string commandQueueName;
         private readonly string eventQueueName;
+        private readonly string eventDispatchQueue;
 
         public AzureStorageQueueConfig(IConfigurationRoot configurationRoot)
         {
@@ -15,6 +16,7 @@ namespace Web.Config
             this.ConnectionString = section["connectionString"];
             this.commandQueueName = section["genericCommandQueue"];
             this.eventQueueName = section["genericEventQueue"];
+            this.eventDispatchQueue = section["genericEventDispatchQueue"];
         }
 
         public string ConnectionString { get; set; }
@@ -27,6 +29,11 @@ namespace Web.Config
         public string EventQueue(Type eventType)
         {
             return this.eventQueueName;
+        }
+
+        public string EventSubscriberQueue(Type eventType)
+        {
+            return this.eventDispatchQueue;
         }
     }
 }

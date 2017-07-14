@@ -21,7 +21,7 @@ namespace NewOrbit.Messaging.Event.Azure
 
         public async Task Dispatch(QueueWrappedEventMessage message)
         {
-            IEvent @event = this.UnpackEvent(message);
+            IEvent @event = this.UnpackEvent(message.EventJson, message.EventType);
             foreach (var subscriber in this.registry.GetSubscribers(@event))
             {
                 // queue up the actual directed message
@@ -30,29 +30,18 @@ namespace NewOrbit.Messaging.Event.Azure
             }
         }
 
-        private IEvent UnpackEvent(QueueWrappedEventMessage message)
+        private IEvent UnpackEvent(string eventJson, string eventType)
         {
-            var json = message.EventJson;
-            var type = Type.GetType(message.EventType);
+            var type = Type.GetType(eventType);
             try
             {
-                return (IEvent) json.FromJson(type);
+                return (IEvent) eventJson.FromJson(type);
             }
             catch(Exception ex)
             {
                 throw new MessageUnpackingException($"Error deserialising the IEvent from a QueueWrappedEventMessage", ex);
             }
         }
-
-        //private void Handle(IEvent @event, object subscriber)
-        //{
-        //    var interfaceType = subscriber.GetGenericInterface(typeof(ISubscribeToEventsOf<>), @event.GetType());
-        //    if (interfaceType != null)
-        //    {
-        //        var method = interfaceType.GetMethod("HandleEvent");
-        //        method.Invoke(subscriber, new object[] { @event });
-        //    }
-        //}
 
         private async Task PublishSuccess(IEvent @event, Type subscriber)
         {
@@ -65,5 +54,23 @@ namespace NewOrbit.Messaging.Event.Azure
             };
             await this.bus.Publish(this, msg).ConfigureAwait(false);
         }
+
+        //public void Dispatch(SubscriberQueueWrappedEventMessage message)
+        //{
+        //    IEvent @event = this.UnpackEvent(message.EventJson, message.EventType);
+        //    var subscriberType = Type.GetType(message.SubscriberType);
+        //    var subscriber = this.dependencyFactory.Make(subscriberType);
+        //    this.Handle(@event, subscriber);
+        //}
+
+        //private void Handle(IEvent @event, object subscriber)
+        //{
+        //    var interfaceType = subscriber.GetGenericInterface(typeof(ISubscribeToEventsOf<>), @event.GetType());
+        //    if (interfaceType != null)
+        //    {
+        //        var method = interfaceType.GetMethod("HandleEvent");
+        //        method.Invoke(subscriber, new object[] { @event });
+        //    }
+        //}
     }
 }
