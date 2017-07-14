@@ -14,8 +14,6 @@ namespace MessagingFacts.Builders
     {
         private IEvent _event = new CommandTestedEvent();
         private readonly Mock<IEventPublisherRegistry> publisherRegistry = new Mock<IEventPublisherRegistry>();
-        private readonly Mock<ILogEventBusMessages> logger = new Mock<ILogEventBusMessages>();
-        private readonly Mock<IEventSubscriberRegistry> subscriberRegistry = new Mock<IEventSubscriberRegistry>();
         private readonly Mock<IDeferredEventMechanism> mechanism = new Mock<IDeferredEventMechanism>();
 
         public DeferredEventBusTestBuilder WithNoPublishersForEvent<T>() where T: IEvent
@@ -29,8 +27,7 @@ namespace MessagingFacts.Builders
         {
             try
             {
-                var sut = new DeferredEventBus(this.publisherRegistry.Object, this.logger.Object,
-                    this.subscriberRegistry.Object,
+                var sut = new DeferredEventBus(this.publisherRegistry.Object, 
                     this.mechanism.Object);
                 await sut.Submit(this, this._event).ConfigureAwait(false);
             }
@@ -46,7 +43,6 @@ namespace MessagingFacts.Builders
         }
 
         private bool noPublisherExceptionThrown = false;
-        private int subscriberCount;
         private bool wrongPublisherExceptionThrown;
 
         public void CheckNoPublisherExceptionThrown()
@@ -59,33 +55,6 @@ namespace MessagingFacts.Builders
             this.publisherRegistry.Setup(p => p.GetPublisher(It.IsAny<IEvent>()))
                 .Returns(typeof(DeferredEventBusTestBuilder));
             return this;
-        }
-
-        public void CheckNoSubscribersWasLogged()
-        {
-            this.logger.Verify(l => l.NoSubscribersFoundForEvent(It.IsAny<IEvent>()), Times.Once());
-        }
-
-        public DeferredEventBusTestBuilder WithMultipleSubscribersToEvent(int subscriberCount)
-        {
-            this.subscriberCount = subscriberCount;
-            this.subscriberRegistry.Setup(r => r.GetSubscribers(It.IsAny<IEvent>()))
-                .Returns(GetSubscribers());
-            return this;
-        }
-
-        private IEnumerable<Type> GetSubscribers()
-        {
-            for (var i = 0; i < this.subscriberCount; i++)
-            {
-                yield return this.GetType();
-            }
-        }
-
-        public void CheckEachMessageWasQueuedUp()
-        {
-            this.mechanism.Verify(m => m.Defer(It.IsAny<IEvent>(), It.IsAny<Type>()),
-                Times.Exactly(this.subscriberCount));
         }
 
         public DeferredEventBusTestBuilder WithIncorrectPublisherForEvent()
@@ -103,6 +72,11 @@ namespace MessagingFacts.Builders
         public DeferredEventBusTestBuilder WithMultiplePublishersForEvent()
         {
             return this;
+        }
+
+        public void CheckEventWasProperlyQueued()
+        {
+            this.mechanism.Verify(m => m.Defer(It.IsAny<IEvent>()), Times.Once());
         }
     }
 }

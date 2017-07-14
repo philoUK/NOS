@@ -17,32 +17,21 @@ namespace MessagingFacts
         }
 
         [Fact]
-        public async Task NoSubscribersLogsTheFactButDoesNotFail()
-        {
-            var m = await new DeferredEventBusTestBuilder()
-                .WithPublisherForEvent()
-                .Submit();
-            m.CheckNoSubscribersWasLogged();
-        }
-
-        [Fact]
-        public async Task EachSubscriberShouldHaveTheirEventQueuedUp()
-        {
-            var subscriberCount = 100;
-            var m = await new DeferredEventBusTestBuilder()
-                .WithPublisherForEvent()
-                .WithMultipleSubscribersToEvent(subscriberCount)
-                .Submit();
-            m.CheckEachMessageWasQueuedUp();
-        }
-
-        [Fact]
         public async Task TheWrongPublisherShouldThrowAnException()
         {
             var m = await new DeferredEventBusTestBuilder()
                 .WithIncorrectPublisherForEvent()
                 .Submit();
             m.CheckWrongPublisherExceptionThrown();
+        }
+
+        [Fact]
+        public async Task SubmitsCorrectlyToDeferralMechanism()
+        {
+            var m = await new DeferredEventBusTestBuilder()
+                .WithPublisherForEvent()
+                .Submit();
+            m.CheckEventWasProperlyQueued();
         }
     }
 }

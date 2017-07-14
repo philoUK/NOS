@@ -8,21 +8,26 @@ namespace NewOrbit.Messaging.Event.Azure
 {
     public class ReceivingEventBus : IPublishEventsOf<EventDispatched>, IReceivingEventBus
     {
-        private readonly IHandlerFactory handlerFactory;
         private readonly IEventBus bus;
+        private readonly IEventSubscriberRegistry registry;
+        private readonly IDeferredEventMechanism mechanism;
 
-        public ReceivingEventBus(IHandlerFactory handlerFactory, IEventBus bus)
+        public ReceivingEventBus(IEventBus bus, IEventSubscriberRegistry registry, IDeferredEventMechanism mechanism)
         {
-            this.handlerFactory = handlerFactory;
             this.bus = bus;
+            this.registry = registry;
+            this.mechanism = mechanism;
         }
 
         public async Task Dispatch(QueueWrappedEventMessage message)
         {
             IEvent @event = this.UnpackEvent(message);
-            var subscriber = await this.GetSubscriber(message, @event).ConfigureAwait(false);
-            this.Handle(@event, subscriber);
-            await this.PublishSuccess(@event, subscriber).ConfigureAwait(false);
+            foreach (var subscriber in this.registry.GetSubscribers(@event))
+            {
+                // queue up the actual directed message
+                await this.mechanism.DeferToSubscriber(@event, subscriber).ConfigureAwait(false);
+                await this.PublishSuccess(@event, subscriber).ConfigureAwait(false);
+            }
         }
 
         private IEvent UnpackEvent(QueueWrappedEventMessage message)
@@ -39,37 +44,24 @@ namespace NewOrbit.Messaging.Event.Azure
             }
         }
 
-        private async Task<object> GetSubscriber(QueueWrappedEventMessage message, IEvent @event)
-        {
-            var type = Type.GetType(message.SubscribingType);
-            try
-            {
-                return await this.handlerFactory.Make(type, @event).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new MessageUnpackingException($"Error determining the subscriber for event of type {message.EventType} with an Id of {message.EventId}", ex);
-            }
-        }
+        //private void Handle(IEvent @event, object subscriber)
+        //{
+        //    var interfaceType = subscriber.GetGenericInterface(typeof(ISubscribeToEventsOf<>), @event.GetType());
+        //    if (interfaceType != null)
+        //    {
+        //        var method = interfaceType.GetMethod("HandleEvent");
+        //        method.Invoke(subscriber, new object[] { @event });
+        //    }
+        //}
 
-        private void Handle(IEvent @event, object subscriber)
-        {
-            var interfaceType = subscriber.GetGenericInterface(typeof(ISubscribeToEventsOf<>), @event.GetType());
-            if (interfaceType != null)
-            {
-                var method = interfaceType.GetMethod("HandleEvent");
-                method.Invoke(subscriber, new object[] { @event });
-            }
-        }
-
-        private async Task PublishSuccess(IEvent @event, object subscriber)
+        private async Task PublishSuccess(IEvent @event, Type subscriber)
         {
             var msg = new EventDispatched
             {
                 Date = DateTime.UtcNow,
                 EventId = @event.Id,
                 EventTypeName = @event.GetType().AssemblyQualifiedName,
-                SubscriberTypeName = subscriber.GetType().AssemblyQualifiedName
+                SubscriberTypeName = subscriber.AssemblyQualifiedName
             };
             await this.bus.Publish(this, msg).ConfigureAwait(false);
         }

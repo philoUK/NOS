@@ -23,22 +23,22 @@ namespace MessagingFacts
             builder.CheckEventUnpackingExceptionWasThrown();
         }
 
-        [Fact]
-        public async Task GarbledSubscriberTypeThrowsCorrectException()
-        {
-            var builder = await new ReceivingEventBusTestBuilder()
-                .GivenABadSubscriberType()
-                .SubmitEvent();
-            builder.CheckEventUnpackingExceptionWasThrown();
-        }
+        //[Fact]
+        //public async Task GarbledSubscriberTypeThrowsCorrectException()
+        //{
+        //    var builder = await new ReceivingEventBusTestBuilder()
+        //        .GivenABadSubscriberType()
+        //        .SubmitEvent();
+        //    builder.CheckEventUnpackingExceptionWasThrown();
+        //}
 
-        [Fact]
-        public async Task EventGetsProperlyDispatchedAndEventDispatchEventRaised()
-        {
-            var builder = await new ReceivingEventBusTestBuilder()
-                .SubmitEvent();
-            builder.CheckEventWasDispatched();
-            builder.CheckEventDispatchEventRaised();
-        }
+        //[Fact]
+        //public async Task EventGetsProperlyDispatchedAndEventDispatchEventRaised()
+        //{
+        //    var builder = await new ReceivingEventBusTestBuilder()
+        //        .SubmitEvent();
+        //    builder.CheckEventWasDispatched();
+        //    builder.CheckEventDispatchEventRaised();
+        //}
     }
 }

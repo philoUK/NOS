@@ -4,9 +4,9 @@ using MessagingFacts.Handlers;
 using MessagingFacts.Messages;
 using Moq;
 using NewOrbit.Messaging;
+using NewOrbit.Messaging.Event;
 using NewOrbit.Messaging.Event.Azure;
 using NewOrbit.Messaging.Monitoring.Events;
-using NewOrbit.Messaging.Registrars;
 using NewOrbit.Messaging.Shared;
 using Xunit;
 
@@ -19,6 +19,8 @@ namespace MessagingFacts.Builders
         private string subscribingType;
         private readonly Mock<IEventBus> eventBus = new Mock<IEventBus>();
         private bool unpackingExceptionThrown = false;
+        private readonly Mock<IEventSubscriberRegistry> registry = new Mock<IEventSubscriberRegistry>();
+        private readonly Mock<IDeferredEventMechanism> mechanism = new Mock<IDeferredEventMechanism>();
 
         public ReceivingEventBusTestBuilder()
         {
@@ -36,7 +38,7 @@ namespace MessagingFacts.Builders
 
         public async Task<ReceivingEventBusTestBuilder> SubmitEvent()
         {
-            var sut = new ReceivingEventBus(new FakeHandlerFactory(), this.eventBus.Object);
+            var sut = new ReceivingEventBus(this.eventBus.Object, this.registry.Object, this.mechanism.Object);
             try
             {
                 await sut.Dispatch(this.MakeMessage()).ConfigureAwait(false);
@@ -55,8 +57,7 @@ namespace MessagingFacts.Builders
                 Date = DateTime.UtcNow,
                 EventId = _event.Id,
                 EventJson = this.eventText,
-                EventType = this._event.GetType().AssemblyQualifiedName,
-                SubscribingType = this.subscribingType
+                EventType = this._event.GetType().AssemblyQualifiedName
             };
         }
 

@@ -17,13 +17,12 @@ namespace MessagingFacts
         {
             var sut = new AzureStorageQueueEventMechanismInterceptor();
             var @event = new CommandTestedEvent();
-            await sut.Defer(@event, this.GetType());
+            await sut.Defer(@event);
             var queuedMessage = sut.Message;
             Assert.NotNull(queuedMessage);
             Assert.Equal(@event.Id, queuedMessage.EventId);
             Assert.Equal(@event.GetType().AssemblyQualifiedName, queuedMessage.EventType);
             Assert.Equal(@event.ToJson(), queuedMessage.EventJson);
-            Assert.Equal(this.GetType().AssemblyQualifiedName, queuedMessage.SubscribingType);
         }
 
         [Fact]
@@ -31,7 +30,7 @@ namespace MessagingFacts
         {
             var queueName = "azure-eventmechanism-tests";
             var sut = new AzureStorageQueueEventMechanism(AzureStorageQueueEventMechanismInterceptor.GetConfig());
-            await sut.Defer(new CommandTestedEvent(), this.GetType());
+            await sut.Defer(new CommandTestedEvent());
             Assert.True(await this.QueueExists(queueName));
             await this.DeleteQueue(queueName);
         }

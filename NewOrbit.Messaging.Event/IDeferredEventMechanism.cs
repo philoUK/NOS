@@ -5,6 +5,7 @@ namespace NewOrbit.Messaging.Event
 {
     public interface IDeferredEventMechanism
     {
-        Task Defer(IEvent @event, Type subscribingType);
+        Task Defer(IEvent @event);
+        Task DeferToSubscriber(IEvent @event, Type subscriberType);
     }
 }
