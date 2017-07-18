@@ -55,6 +55,11 @@ namespace NewOrbit.Messaging.Timeouts.Azure
             }
         }
 
+        public void Delete(TimeoutData data)
+        {
+            this.Delete(data.TargetId, data.TargetMethod);
+        }
+
         public IEnumerable<TimeoutData> GetExpiredTimeoutsSince(DateTime dtm)
         {
             var results = new List<TimeoutEntity>();

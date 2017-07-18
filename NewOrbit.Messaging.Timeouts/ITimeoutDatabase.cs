@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NewOrbit.Messaging.Timeouts
 {
@@ -8,5 +9,6 @@ namespace NewOrbit.Messaging.Timeouts
         void Save(TimeoutData timeoutData);
         void Delete(string id, string methodName);
         IEnumerable<TimeoutData> GetExpiredTimeoutsSince(DateTime dtm);
+        void Delete(TimeoutData dataItem);
     }
 }
