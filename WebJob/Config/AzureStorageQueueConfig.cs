@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using NewOrbit.Messaging.Shared;
 
-namespace Web.Config
+namespace WebJob.Config
 {
-    public class AzureStorageQueueConfig : IAzureStorageQueueConfig
+    class AzureStorageQueueConfig : IAzureStorageQueueConfig
     {
         private readonly string commandQueueName;
         private readonly string eventQueueName;

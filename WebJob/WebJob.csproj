@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <ApplicationIcon />
+    <OutputTypeEx>exe</OutputTypeEx>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
+    <PackageReference Include="WindowsAzure.Storage" Version="8.1.4" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="1.1.0" />
+    <PackageReference Include="Serilog.Sinks.Trace" Version="2.0.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="2.0.0" />
+    <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="2.0.0" />    
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NewOrbit.Messaging.Command.Azure\NewOrbit.Messaging.Command.Azure.csproj" />
+    <ProjectReference Include="..\NewOrbit.Messaging.Dispatch\NewOrbit.Messaging.Dispatch.csproj" />
+    <ProjectReference Include="..\NewOrbit.Messaging.Event.Azure\NewOrbit.Messaging.Event.Azure.csproj" />
+    <ProjectReference Include="..\NewOrbit.Messaging.Saga.Azure\NewOrbit.Messaging.Saga.Azure.csproj" />
+    <ProjectReference Include="..\NewOrbit.Messaging.Timeouts.Azure\NewOrbit.Messaging.Timeouts.Azure.csproj" />
+    <ProjectReference Include="..\NewOrbit.Messaging.Timeouts\NewOrbit.Messaging.Timeouts.csproj" />
+    <ProjectReference Include="..\SampleDomain.Handlers\SampleDomain.Handlers.csproj" />
+    <ProjectReference Include="..\SampleDomain.Messages\SampleDomain.Messages.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Config\appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

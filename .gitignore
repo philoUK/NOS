@@ -242,6 +242,7 @@ _Pvt_Extensions
 
 #Build Output
 .build/
+/WebJobs/Config/
 src/Experian.VMC.WebJobs.CommandHandlers/Config/
 src/Experian.VMC.WebJobs.EnquiryImport/Config/
 src/Experian.VMC.WebJobs.EnquiryProcessing/Config/

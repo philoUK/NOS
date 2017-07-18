@@ -50,4 +50,8 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
+
+  <Target Name="PrecompileScript" BeforeTargets="BeforeBuild">
+    <Exec Command="xcopy /Y $(MSBuildProjectDirectory)\appsettings*.json $(MSBuildProjectDirectory)\..\WebJob\Config\*" />
+  </Target>
 </Project>

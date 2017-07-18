@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F4E3B872-7B9C-40D3-9C4C-B7F4EBA1E33C}"
 EndProject
@@ -37,7 +37,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewOrbit.Messaging.Timeouts
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{2617F2B4-EDAD-41E4-9935-2728D4B5044B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleDomain.Messages", "SampleDomain.Messages\SampleDomain.Messages.csproj", "{5FA2F086-2A64-4F4D-821D-182B513027DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleDomain.Messages", "SampleDomain.Messages\SampleDomain.Messages.csproj", "{5FA2F086-2A64-4F4D-821D-182B513027DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebJob", "WebJob\WebJob.csproj", "{33E09E7B-9ED6-488F-B855-E8E65A692BB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleDomain.Handlers", "SampleDomain.Handlers\SampleDomain.Handlers.csproj", "{BD1B023C-0B33-4DAD-9071-D7852C3775EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +113,14 @@ Global
 		{5FA2F086-2A64-4F4D-821D-182B513027DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FA2F086-2A64-4F4D-821D-182B513027DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FA2F086-2A64-4F4D-821D-182B513027DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33E09E7B-9ED6-488F-B855-E8E65A692BB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33E09E7B-9ED6-488F-B855-E8E65A692BB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33E09E7B-9ED6-488F-B855-E8E65A692BB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33E09E7B-9ED6-488F-B855-E8E65A692BB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD1B023C-0B33-4DAD-9071-D7852C3775EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD1B023C-0B33-4DAD-9071-D7852C3775EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD1B023C-0B33-4DAD-9071-D7852C3775EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD1B023C-0B33-4DAD-9071-D7852C3775EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,5 +142,7 @@ Global
 		{E235BBF7-923A-4E50-9E14-0F347A308027} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
 		{2617F2B4-EDAD-41E4-9935-2728D4B5044B} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
 		{5FA2F086-2A64-4F4D-821D-182B513027DD} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
+		{33E09E7B-9ED6-488F-B855-E8E65A692BB7} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
+		{BD1B023C-0B33-4DAD-9071-D7852C3775EE} = {B1AD506B-ED40-4B31-A780-9B00994AF6BA}
 	EndGlobalSection
 EndGlobal

@@ -13,7 +13,7 @@ namespace Web.Config
         public static void AddNewOrbitMessaging(this IServiceCollection services)
         {
             services.AddTransient<IDeferredEventMechanism, AzureStorageQueueEventMechanism>();
-            services.AddSingleton<IEventPublisherRegistry, IEventPublisherRegistry>();
+            services.AddSingleton<IEventPublisherRegistry, EventRegistry>();
             services.AddSingleton<IAzureStorageQueueConfig, AzureStorageQueueConfig>();
             services.AddTransient<ICommandHandlerRegistry, CommandHandlerRegistry>();
             services.AddTransient<IEventBus, DeferredEventBus>();
